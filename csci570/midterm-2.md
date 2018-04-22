@@ -44,7 +44,7 @@
 
 #### Definition:
 
-    I. Pseudo-Polynomial
+##### I. Pseudo-Polynomial
       A numeric algorithm runs in pseudo-polynomial time if its running time is
       polynomial in the numeric value of input, but is exponential in length of
       input.
@@ -57,19 +57,19 @@
 
 #### Algorithms:
 
-    I. Bellman Ford
+##### I. Bellman Ford
 
       Notes:
         - See Shortest Path (Bellman Ford)
 
-    II. Floyd Warshall
+##### II. Floyd Warshall
 
       Notes:
         - See All Pairs Shortest Path (Floyd Warshall)
 
 #### Problems:
 
-    I. Fibonacci Numbers
+##### I. Fibonacci Numbers
 
       Statement:
         Fibonacci number F_n is defined as the sum of two previous Fibonacci
@@ -123,7 +123,7 @@
           - Faster than Memoization by a constant factor due to running from
             bottom up, rather top down and then bottom up
 
-    II. Money Changing Problem
+##### II. Money Changing Problem
 
       Statement:
         You are to compute the minimum number of coins needed to make change for
@@ -173,7 +173,7 @@
         - Similar to knapsack problem, however since we allow repetition of
           items we replace v-1 with v in our recurrence formula
 
-    III. 0-1 Knapsack Problem
+##### III. 0-1 Knapsack Problem
 
       Statement:
         Given a set of unique items, each with a weight and a value, determine
@@ -239,7 +239,7 @@
           in our recurrence formula
         - Cannot be solved in polynomial time
 
-    IV. Longest Common Subsequence
+##### IV. Longest Common Subsequence
 
       Statement:
         We are given two strings: string S of length n and string T of length m.
@@ -297,7 +297,7 @@
         - We can solve this with O(n) space but we won't be able to reconstruct
           the solution
 
-    V. Shortest Path (Bellman Ford)
+##### V. Shortest Path (Bellman Ford)
 
       Statement:
         Given a graph G with weighted edges (positive or negative), find the
@@ -339,7 +339,7 @@
           more cycle after reaching v-1 edges. If anything changes on the
           second cycle, we have a negative cycle
 
-    VI. All Pairs Shortest Path (Floyd Warshall)
+##### VI. All Pairs Shortest Path (Floyd Warshall)
 
       Statement:
         Given a graph G with weighted edges (positive or negative) find the
@@ -375,7 +375,7 @@
       Key Points:
         - O(V^3) vs Bellman Ford O(EV^2)
 
-    VII. Weighted Interval
+##### VII. Weighted Interval
 
       Statement:
         Given N intervals where every job is given a start time, s, a finish
@@ -418,18 +418,18 @@
 
 ### Definitions:
 
-    I. Flow Network
+##### I. Flow Network
       Directed graph G = (V,E) with the following features:
         - Each edge e has a non-negative capacity c_e
         - Has a single source node s in V
         - Has a single sink node t in V
 
-    II. Steady State Flow
+##### II. Steady State Flow
       Flow that does not change over time
       The value of flow v(f) is defined as follows:
         v(f) = Σ f(e), outOf(s)
 
-    III. Residual Graph
+##### III. Residual Graph
       G_f is the residual graph of G with the following definition:
         - G_f has the same set of nodes as G
         - for each edge e with f(e) < c_e, we include e in G_f with capacity
@@ -437,32 +437,32 @@
         - for each edge e with f(e) > 0, we include edge e' (opposite direction
           to e) in G_f with f(e) units of capacity
 
-    IV. Bottleneck
+##### IV. Bottleneck
       If p is a simple path from s to t in G_f, then bottleneck(p) is the
       minimum residual capacity of any edge on P.
 
-    V. Strongly Polynomial
+##### V. Strongly Polynomial
       An algorithm runs in strongly polynomial time if the number of operations
       is bounded by a polynomial in the number of integers in the input.
       This is relevant if input consists of integers.
 
-    VI. Bipartite Graph
+##### VI. Bipartite Graph
       A bipartite graph G(V,E) is an undirected graph whose node set can be
       partitioned as V = X U Y with property that every edge e in E has one
       end in X and the other in Y.
 
-    VII. Matching
+##### VII. Matching
       A matching M in G is a subset of the edges M ≤ E such that each node
       appears in at most one edge in M.
 
-    VIII. Edge Disjoint
+##### VIII. Edge Disjoint
       A set of paths is edge-disjoint if their edge sets are disjoint
 
-    XI. Node Disjoint
+##### XI. Node Disjoint
       A set of paths is node-disjoint if their node sets (except for starting
       and ending) are disjoint
 
-    X. Circulation
+##### X. Circulation
       A circulation with demand {d_v} is a function f that assigns non-negative
       real numbers to each edge and satisfies:
         1. Capacity Conditions
@@ -472,7 +472,7 @@
 
 ### Algorithms:
 
-    I. Ford-Fulkerson:
+##### I. Ford-Fulkerson:
 
       Assumptions:
         - no edges enter source (s) or leave sink (t)
@@ -517,7 +517,7 @@
         - The flow going through the network at every step is integer valued
         - Pseudo-polynomial
 
-    II. Scaled Ford-Fulkerson:
+##### II. Scaled Ford-Fulkerson:
 
       Assumptions:
         See Ford-Fulkerson:Assumptions
@@ -555,7 +555,7 @@
           at least ∆
         - Weakly Polynomial
 
-    III. Edmunds-Karp (Short Pipes):
+##### III. Edmunds-Karp (Short Pipes):
 
       Background:
         Same as Ford-Fulkerson, except that each augmenting path must be a
@@ -567,7 +567,7 @@
       Key Points:
         - Strongly polynomial
 
-    IV. Edmunds-Karp (Fat Pipes):
+##### IV. Edmunds-Karp (Fat Pipes):
 
       Background:
         Same as Ford-Fulkerson, except choose the augmenting path with the
@@ -582,7 +582,7 @@
 
   Problems:
 
-    I. Max Flow
+##### I. Max Flow
 
       Statement:
         Given a flow network G, find an s-t flow with max value.
@@ -596,7 +596,7 @@
       Key Points:
         - Max Flow <= Capacity of any (A, B) cut
 
-    II. Min Cut
+##### II. Min Cut
 
       Statement:
         Given a flow network G, find the min-cut of an s-t flow with max value.
@@ -616,7 +616,7 @@
           - Find min cut closest to T
           - Check if the cuts are the same
 
-    III. Bipartite Matching
+##### III. Bipartite Matching
 
       Statement:
         Find a matching M of largest possible size in G.
@@ -638,7 +638,7 @@
       Key Points:
         - In this problem, Ford Fulkerson is strongly polynomial
 
-    IV. Edge Disjoint
+##### IV. Edge Disjoint
 
       Statement:
         Given a directed graph G with s & t in V. Find the max number of edge
@@ -667,7 +667,7 @@
             B' = B(s, u) + A(u, t)
             A' = A(s, v) + B(v, t)
 
-    V. Node Disjoint
+##### V. Node Disjoint
 
         Statement:
           Given a directed graph G with s & t in V. Find the max number of node
@@ -679,7 +679,7 @@
               node v'' for all edges out of v, connect v' and v'' with an edge
               of capacity 1.
 
-    VI. Circulation with Lower Bounds
+##### VI. Circulation with Lower Bounds
 
       Statement:
         Given a directed graph G(V,E) with capacities on the edges, and demands
