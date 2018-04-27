@@ -825,7 +825,10 @@
   - Most of the time we use the Simplex method, which does not run in P, but has
     good performance in practice.
   - Can be used to solve problems both approximately and exactly.
+<<<<<<< HEAD
   - Remember zero contraints
+=======
+>>>>>>> 751c509d34f5f5e3a2861d3221bc6d3b7d800bad
 
 #### Definition:
 

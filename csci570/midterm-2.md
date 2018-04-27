@@ -416,7 +416,7 @@
 - Lecture - Week 9, 10
 - Algorithm Design - Chapter 7
 
-### Definitions:
+#### Definitions:
 
 ##### I. Flow Network
       Directed graph G = (V,E) with the following features:
@@ -470,7 +470,7 @@
         2. Demand Conditions
           for each node v in V: f_in(v) = f_out(v) = d_v
 
-### Algorithms:
+#### Algorithms:
 
 ##### I. Ford-Fulkerson:
 
@@ -580,7 +580,7 @@
       Key Points:
         - Weakly polynomial
 
-  Problems:
+#### Problems:
 
 ##### I. Max Flow
 
