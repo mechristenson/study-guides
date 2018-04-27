@@ -22,26 +22,30 @@
   algorithm will involve probabilistic statements.
 
 #### Key Attributes:
-  Analysis of Randomized Algorithms
+  - Analysis of Randomized Algorithms
+
     When we analyze randomized algorithms, we are interested in expected running
     time, which is the average amount of time computed over all possible
     outcomes.
       T(n) = max_|x|=n (E[T(x)])
 
-    Advantages of Randomized Algorithms
-      May be faster than deterministic algorithms.
-      May have smaller space complexity.
-      May be simpler.
-      Some problems can be solved with randomization that cannot be efficiently
-        solved with deterministic algorithms.
+  - Advantages of Randomized Algorithms
+
+    May be faster than deterministic algorithms.
+    May have smaller space complexity.
+    May be simpler.
+    Some problems can be solved with randomization that cannot be efficiently
+      solved with deterministic algorithms.
 
 #### Classifications:
   I. Las Vegas Algorithms
+
     Always returns a correct answer, but may run for longer than you expect.
     Runtime is subject to input randomness but they always succeed.
     For example: Quicksort
 
   II. Monte Carlo Algorithms
+
     May fail or return an incorrect answer, but its runtime is independent of
     input randomness.
     Typically succeed with high probability, therefore we have to run them
@@ -50,32 +54,38 @@
 
 #### Definition:
   I. Sample Space
+
     The sample space Ω consists of all possible outcomes of an experiment.
     For example, when tossing a coin, Ω = {H,T}
 
   II. Probability
+
     The probability of w where w is an element of Ω, denoted Pr(w) is the number
       such that:
         0 ≤ Pr(W) ≤ 1, and Pr(Ω) = 1
 
   III. Event
+
     A subset of a sample space is called an event.
     The probability of an event is equal to the sum of the probabilities of
       outcomes contained in that event.
 
   IV. Random Variable
+
     A discrete random variable, X, is a function from the sample space Ω into
       reals, R.
     The probability that the random variable X takes the value s is defined by:
       Pr(X = s) = Pr(w in Ω s.t.X(w) = s)
 
   V. Indicator Random Variable
+
     Let E be an event. The indicator of E is the random variable X which is 1
       when E occurs and 0 when E doesn't occur:
         X: Ω -> R
         X(k) = {1 if k in E, 0 if k not in E}
 
   VI. Expectation
+
     Let X be a random variable in experiment with sample space Ω. Its
       expectation is defined by:
         E[X] = Σ of k in Ω: Pr(X = k) * X(k)
@@ -83,18 +93,22 @@
       probability
 
   VII. Expectation of an Indicator
+
     Let E be an event, let X be its indicator random variable.
       E[X] = Pr[E]
 
   VIII. Linearity of Expectation
+
     Given an experiment, let X and Y be random variables:
       E[X+Y] = E[X] + E[Y]
 
   IX. Union Bound
+
     The union bound for any random events A and B is:
       Pr(A V B) ≤ Pr(A) + Pr(B)
 
   X. Edge Contraction
+
     Contraction of an edge with endpoints u and v is the replacement of u and v
     with a single vertex such that edges incident to the new vertex are the
     edges other than e that were incident to either u or w. If there are
@@ -104,6 +118,7 @@
   I. QuickSort:
 
     Overview:
+
       Input is a list L
       If length(L) = 0 or 1, return L
       Choose a pivot p
@@ -115,6 +130,7 @@
       Sort L1 and L2 recursively        
 
     Runtime Analysis:
+
       I. Deterministic Pivot
         If partition produces two subproblems that are roughly of the same size
           then the recurrence of the running time is:
@@ -157,6 +173,7 @@
               Pr(X) = Pr(Union(k=1..n): Xk) = ∏(k=1..n) Pr(Xk)
 
     Key Points:
+
       Binary Search Trees and QuickSort
         We can view a binary search tree in two ways:
           1. As a tree resulting from insertions
@@ -200,76 +217,77 @@
                 ∑(i=1..k):1/(k-i+1) + ∑(i=k+1..n):1/(i-k+1) < 2H_n
               E[d(k)] = O(logn)
 
-    II. Skip Lists
-      Sorted linked list with some random shortcuts
-      Use shortcuts to make searches of sorted linked lists faster
+  II. Skip Lists
 
-      Method:
-        1. Search
-          Algorithm:
-            Scan for x in a shortcut list L2
-            If we find x, we're done
-            Otherwise, we reach some value bigger than x and we know that x is
-              not in the shortcut list.
-            Search for x in the original list L1 starting from y (largest
-              intermediate value in L2 less than x)
+    Sorted linked list with some random shortcuts
+    Use shortcuts to make searches of sorted linked lists faster
 
-          Optimization:
-            How many skip nodes should we put into the shortcut list?
-            We need to optimize:
-              Search Time = L2 + partOfL1 = L2 + L1/L2
-              L2 = √(L1)
-            Search speed:
-              L2 + L1/L2 = √(L1) + L1/√(L2) = 2√(L1)
+    Method:
+      1. Search
+        Algorithm:
+          Scan for x in a shortcut list L2
+          If we find x, we're done
+          Otherwise, we reach some value bigger than x and we know that x is
+            not in the shortcut list.
+          Search for x in the original list L1 starting from y (largest
+            intermediate value in L2 less than x)
 
-            We can optimize more by adding more lists on top of L2:
-              Linked list of size N with two shortcuts:
-                2√(N)
-              Linked list of size N with three shortcuts:
-                3 root3(N)
-              Linked list of size N with k shortcuts:
-                k rootk(N)
-              To optimize k:
-                k = logN
+        Optimization:
+          How many skip nodes should we put into the shortcut list?
+          We need to optimize:
+            Search Time = L2 + partOfL1 = L2 + L1/L2
+            L2 = √(L1)
+          Search speed:
+            L2 + L1/L2 = √(L1) + L1/√(L2) = 2√(L1)
 
-            Runtime Analysis:
-              If we create k = logN shortcuts, then:
-                k rootk(N) = logN * rootlogN(N) = logN * N^(log_n(2)) = 2logN
-                O(log N)
+          We can optimize more by adding more lists on top of L2:
+            Linked list of size N with two shortcuts:
+              2√(N)
+            Linked list of size N with three shortcuts:
+              3 root3(N)
+            Linked list of size N with k shortcuts:
+              k rootk(N)
+            To optimize k:
+              k = logN
 
-      Structure:
-        Deterministic Skip Lists with logn shortcuts are hard to implement.
+          Runtime Analysis:
+            If we create k = logN shortcuts, then:
+              k rootk(N) = logN * rootlogN(N) = logN * N^(log_n(2)) = 2logN
+              O(log N)
 
-        Randomized Skip Lists:
-          Overview:
-            When you insert an element, flip a fair coin. If its heads add that
-            element to the next level up, and flip again otherwise move on to
-            the next element.
+    Structure:
+      Deterministic Skip Lists with logn shortcuts are hard to implement.
 
-          Analysis:
-            Intuitively, since each level of the skip list has about half the
-            number of nodes of the previous level, the total number of levels
-            should be about O(logn).
-            Each level of shortcuts decrease the search time roughly in half, so
-            after O(logn) levels, we should have a search time of O(logn)
+      Randomized Skip Lists:
+        Overview:
+          When you insert an element, flip a fair coin. If its heads add that
+          element to the next level up, and flip again otherwise move on to
+          the next element.
 
-          Worst-Case:
-            Let L(x) be the number of levels that contain a search key x, not
-            counting the bottom level.
+        Analysis:
+          Intuitively, since each level of the skip list has about half the
+          number of nodes of the previous level, the total number of levels
+          should be about O(logn).
+          Each level of shortcuts decrease the search time roughly in half, so
+          after O(logn) levels, we should have a search time of O(logn)
 
-            In order for a search key x to appear on level k, it must have
-            flipped k heads in a row. The list has k levels if at least one
-            key is at k.
-              Pr(max=k) = Pr(L(1) = k V L(2) = k V ... V L(n) = k),
-            By union bound:
-              Pr(L(1) = k V L(2) = k V ... V L(n) = k) ≤
-               Pr(L(1) = k) + ... + Pr(L(n) = k) =
-               1/2^k + ... + 1/2^k = n/2^k
+        Worst-Case:
+          Let L(x) be the number of levels that contain a search key x, not
+          counting the bottom level.
 
-            If we choose the number of levels k = clogn for any constant c > 1:
-              Pr(max = c log n) ≤ n/n^c = 1/n^(c-1)
-            Thus, we can conclude with a high probability that a skip list has
-            O(logn) levels.
+          In order for a search key x to appear on level k, it must have
+          flipped k heads in a row. The list has k levels if at least one
+          key is at k.
+            Pr(max=k) = Pr(L(1) = k V L(2) = k V ... V L(n) = k),
+          By union bound:
+            Pr(L(1) = k V L(2) = k V ... V L(n) = k) ≤
+             Pr(L(1) = k) + ... + Pr(L(n) = k) =
+             1/2^k + ... + 1/2^k = n/2^k
+
+          If we choose the number of levels k = clogn for any constant c > 1:
+            Pr(max = c log n) ≤ n/n^c = 1/n^(c-1)
+          Thus, we can conclude with a high probability that a skip list has
+          O(logn) levels.
 
 #### Problems:
   I. Global Min Cut
@@ -337,14 +355,17 @@
 
 #### Definition:
   I. Decidable
+
     A problem is decidable or computable if it can be solved by a Turing machine
     that halts on every input.
 
   II. Complexity Class P
+
     The fundamental complexity class P or PTIME is a class of decision problems
     that can be solved by a deterministic Turing machine in polynomial time.
 
   III. Complexity Class NP
+
     The fundamental complexity class NP is a class of decision problems that
     can be solved by a nondeterministic Turing machine in polynomial time.
 
@@ -352,11 +373,13 @@
     polynomial time deterministic Turing machine.
 
   IV. Deterministic Turing Machine
+
     The deterministic Turing machine means that there is only one valid
     computation starting from any given input. A computation path is like a
     linked list.
 
   V. Nondeterministic Turing Machine
+
     The nondeterministic Turing machine is defined in the same way as
     deterministic, except that a computation is like a tree, where at any state
     it's allowed to have a number of choices.
@@ -365,23 +388,27 @@
     parallel and accept its input if any one of these computations accepts it.
 
   VI. Undecidable Problems
+
     Undecidable means that there is no computer program that always gives the
     correct answer: it may give the wrong answer or run forever without giving
     any answer.
 
   VII. The Halting Problem
+
     The halting problem is the problem of deciding whether a given Turing
     machine halts when presented with a given input.
 
     By Turing's Theorem: the halting problem is not decidable.
 
   VIII. Reduction
+
     If we can solve X then we can solve Y.
     Denoted by Y ≤p X or Y -> X.
     We use this to prove NP Completeness. Knowing that Y is hard, we prove that
       X is harder.
 
   IX. Polynomial Reduction
+
     To reduce problem Y to a problem X, we want a function f that maps Y to X
     such that:
       1. f is polynomial time computable
@@ -389,14 +416,17 @@
         solvable.
 
   X. NP-Hard
+
     X is NP-Hard if Y is NP and Y ≤p X
     Do not have to be in NP
 
   XI. NP-Complete
+
     X is NP-Complete if X is NP-Hard and X is NP
     Most difficult NP Problems
 
   XII. Optimization vs Decision
+
     If one can solve an optimization problem in polynomial time, then one can
     answer the decision version in polynomial time.
     Conversely, by doing a binary search on the bound, b, one can transform a
@@ -407,6 +437,7 @@
 
 #### Methods:
   I. NP Completeness Proof Method
+
     To show that X is NP-Complete:
       1. Show that X is in NP
       2. Pick a problem Y, known to be NP-Complete
@@ -575,6 +606,7 @@
 
 #### Definitions:
   I. 2-Approximation Algorithm
+
     An approximation algorithm that comes within a factor of two of the optimal
     solution.
 
@@ -793,16 +825,18 @@
   - Most of the time we use the Simplex method, which does not run in P, but has
     good performance in practice.
   - Can be used to solve problems both approximately and exactly.
-  
+
 #### Definition:
 
   I. System of Linear Equations
+
     [A][x] = [B]
     A - coefficient matrix
     x - vector of unknowns
     B - Right Hand Side Vector
 
   II. Linear Programming
+
     Continuous variables
     [A][x] ≥ [B]
     A - coefficient matrix MxN
@@ -814,16 +848,20 @@
     Goal: Minimize the objective function subject to the above constraints.
 
   III. Integer Programming
+
     Deals with discrete variables
 
   IV. Mixed Integer Programming
+
     Deals with both types of variables
 
   V. Non-Linear Programming
+
     Deals with non linear constrains for objective functions
 
 #### Methods:
   I. Simplex Method
+
     Overview:
       Start with some random vertex in the convex region.
       Check the value of the optimal solution.
