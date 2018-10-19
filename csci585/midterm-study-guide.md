@@ -114,6 +114,17 @@
                 ) as t
             );
 
+8. LIMIT
+  - Used to specify the number of records to return
+  - EX: SELECT <column>
+          FROM <table>
+          LIMIT <number>
+
+9. ORDER BY
+  - Used to sort the result set in ascending or descending order
+  - EX: SELECT names
+          FROM products
+          ORDER BY names DESC
 #### Concepts
 
 ---
