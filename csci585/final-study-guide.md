@@ -595,6 +595,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 12. Ensemble Methods
   - Use of multiple learning algorithms to obtain a better predictive performance than could be obtained from any of the constituent learning algorithms alone
   - Minimize or eliminate any variances or biases between the individual learners
+
 #### Concepts
 1. Types of AI
   - Type I:
@@ -801,6 +802,56 @@ xnew <- edit(data.frame())
   - Spring 2017 Question 3
 ---
 ### WEKA
+
+#### Sources
+  - WEKA Lecture Notes
+  - Lecture
+
+#### Definitions
+1. WEKA
+  - Waikato Environment for Knowledge Analysis
+  - Toolbox of algorithms and workbench to create new ones
+  - Allows users to test and compare learning algorithms on the same data in one platform
+
+2. WEKA Workbench
+  - Collection of ML Algorithms and data pre-processing tools, accessible by GUI
+  - Modular and Extensible via Java API plugin scheme
+  - Can be used standalone or as a library
+
+3. UI
+  - Explorer Panel provides data pre-processing, algorithms, visualization tools
+  - Experimenter Panel allows comparison of algorithms
+  - Knowledge Flow Panel allows incremental updates of ML algorithms
+
+4. ARFF
+  - Attribute Relation File Format
+  - Standard format for expressing WEKA data
+
+#### Concepts
+1. WEKA Projects
+  - Linguistics: GATE, Bali
+  - Biology: BioWEKA
+  - Distributed Systems: GridWeka
+  - Data Mining: KNIME, RapidMiner
+  - Scientific Workflows: Kepler
+
+#### Syntax
+1. ARFF File Example
+
+```
+@relation weather
+
+@attribute outlook (sunny, overcast, rainy)
+@attribute waveHeight real
+@attribute surf (yes, no)
+
+@data
+sunny, 3, yes
+rainy, 10, no
+sunny, 6, yes
+```
+#### Questions
+  - Fall 2016 Question 3
 ---
 ### Data Visualization
 
