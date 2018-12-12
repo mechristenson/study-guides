@@ -384,9 +384,56 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Spring 2017 Question 6
   - Spring 2017 Question 8
   - Fall 2016 Question 6
+  - Fall 2017 Question 10
 
 ---
 ### Big Data
+
+#### Sources
+  - Big Data Lecture Notes
+  - Lecture
+
+#### Definitions
+1. Big Data
+  - Data that is too big to be stored and/or processed by a single machine
+  - Data that has variety, velocity, volume
+
+2. Datafication
+  - Modern technological trend turning many aspects of our life into computerized data and transforming this information into new forms of value
+
+3. IoT
+  - Internet of Things
+  - More and more electronics are becoming connected with IP addresses and sensors that transmit data periodically through networks. Lightbulbs, cars, computers, refridgerators, tvs, planes, bridges, etc.
+
+#### Concepts
+1. Sources of Big Data
+  - People: web browsing clickstreams
+  - People: purchasing habits
+  - People: social media
+  - People: surveys, polls, census
+  - People: genomic data
+  - People: entertainment/education
+  - People & Devices: medical, fitness, etc.
+  - People & Devices: transportation
+  - Devices: Scientific Instruments
+  - Devices: IoT
+
+2. Data Related Issues
+  - Rigor of data collection
+  - Timing of data collection
+  - Comprehensiveness of data
+  - Data standards, interoperability
+  - Data sampling
+  - Data utilization
+
+3. Uses of Big Data
+  - Industry/Business Optimization
+  - Data Source Combination
+  - Exploitation of Unstructured Data (sound, video, images)
+  - Provide insights
+
+#### Questions
+  - Fall 2017 Question 9
 
 ---
 ### MapReduce
@@ -482,7 +529,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 1. MapReduce Steps
   0. Data is split into file segments, held in a compute cluster made up of nodes
   1. Mapper task is run in parallel on all the segments (i.e. each segment of each node); each mapper produces output in the form of multiple (key, value) pairs
-  2. (Optional) Combiner operation performs a per-key reduction on each node
+  2. (Optional) Combiner operation performs a per-key reduction on each node (this minimizes the work required for the shuffler and decreases the workload on the reducers)
   3. Key/value output pairs from all mappers are forwarded to a shuffler, which consolidates each key's value into a list and associates it with that key
   4. Shuffler forwards keys and their value lists to multiple reducer tasks; each reducer processes incoming key-value lists and emits a single value for each key
 
@@ -491,6 +538,9 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 3. Example MR Projects
   - WordCount for a Book
+  - WordCount and Decreasing Occurances (YARN Cascade)
+    - Step 1: Output k-v pairs of words and values
+    - Step 2: Output decreasing order of values and words
 
 4. DBs used with Hadoop
   - MongoDB, Cassandra, HBase, Hive, Spark, Blue, Solr, Memcached, Solr
@@ -500,6 +550,9 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Spring 2017 Question 5
   - Fall 2016 Question 7
   - Fall 2016 Question 8
+  - Fall 2017 Question 5
+  - Fall 2017 Question 7
+  - Spring 2018 Question 1
 
 ---
 ### Data Science
@@ -657,6 +710,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
     - Big data to use for training
     - Better algorithms from academic and industry research
     - Faster cloud computing platforms and libraries
+  - Ended AI Winter by making it possible to approximate any smooth continuous function with low error
 
 7. NN: Types of Neurons (Activation Functions)
   - Linear Neurons:
@@ -675,6 +729,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Method learning weights
   - Iteratively adjust weights starting from last hidden layer and moving to first hidden layer
   - Aims to reduce the error between expected and actual output by finding the minimum of the quadratic loss for a given training input
+  - Potentially gets stuck in local minima
 
 9. Deep Learning
   - Specialized neural networks where we use large numbers of hidden layers, each of which learning/processing a single feature
@@ -695,6 +750,12 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 12. Ensemble Methods
   - Use of multiple learning algorithms to obtain a better predictive performance than could be obtained from any of the constituent learning algorithms alone
   - Minimize or eliminate any variances or biases between the individual learners
+
+13. Regression Algorithms
+  - Predict the output of values based on input features from data fed into the system
+  - Linear Regression - Learn a linear separator in order to predict class of new data
+  - Non-Linear Regression - Learn a non-linear separator in order to predict class of new data
+  - Regression Tree - Learn a tree in order to predict class of new data
 
 #### Concepts
 1. Types of AI
@@ -755,10 +816,18 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - CNNs can get confused by distorted images because they are not learning the correct way
   - CapsNet takes Neural network idea and seperates neural layers into capsules where each capsule handles one type of visual stimuli, which is then designed in a unified micro-network architecture.
 
+8. Complications with Learning ML Algorithms
+  - Local Minimum - Some algorithms may get stuck in a local minimum if we are not careful about the design of the algorithm, we can try to avoid these with randomized algorithms
+  - Overfitting - Some algorithms may get overfit if we approximate the data we are given too closely, we can avoid this by removing layers of a neural net or regularization
+  - Step Size - if we don't decrease the step size of a gradient descent algorithm, we may overstep the minimum and end up with a weird solution
+
 #### Questions
   - Fall 2016 Question 2
   - Fall 2016 Question 4
   - Fall 2016 Question 5
+  - Fall 2017 Question 2
+  - Fall 2017 Question 3
+  - Fall 2017 Question 6
 
 ---
 ### TensorFlow
@@ -788,6 +857,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 #### Questions
   - Spring 2017 Question 2
+  - Fall 2017 Question 4
 
 ---
 ### R
@@ -1020,6 +1090,9 @@ sunny, 6, yes
 
 #### Questions
   - Spring 2017 Question 7
+  - Fall 2017 Question 1
+  - Fall 2017 Question 8
+
 ---
 ### Extras
 ---
