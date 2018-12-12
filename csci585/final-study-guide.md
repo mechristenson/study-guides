@@ -187,6 +187,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 #### Questions
   - Fall 2016 Question 1
+
 ---
 ### NoSQL
 
@@ -232,17 +233,26 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Querying occurs on keys only
   - Entire value for matching key is returned when queried
   - Entire value for matching key must be updated when its necessary to make changes
+  - Memcached, Redis, DynamoDB
 
 8. Column Family DBs
   - Rather than dealing with rows of data, we deal with columns of them
   - Good for aggregate queries and queries involving a subset of all columns
+  - Components:
+    - Columns - consist of a name (key) and value
+    - Supercolumn - group of columns
+    - Column Family - contains columns of related data
+    - Supercolumn Family - collection of supercolumns
+  - BigTable, HBase, Cassandra
 
 9. Document DBs
   - Collection of documents with an arbitrary number of fields in each document
   - Documents can be JSON, XML, etc
+  - CouchBase, MongoDB
 
 10. GraphDBs
   - Data structure comprised of verticies and edges
+  - Neo4j, Giraph, FlockDB, Tinkerpop
 
 #### Concepts
 1. Drivers of NoSQL Movement
@@ -373,8 +383,11 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 #### Questions
   - Spring 2017 Question 6
   - Spring 2017 Question 8
+  - Fall 2016 Question 6
+
 ---
 ### Big Data
+
 ---
 ### MapReduce
 
@@ -485,8 +498,94 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 #### Questions
   - Spring 2017 Question 4
   - Spring 2017 Question 5
+  - Fall 2016 Question 7
+  - Fall 2016 Question 8
+
 ---
 ### Data Science
+
+#### Sources
+  - Data Science Lecture Notes
+  - Lecture
+
+#### Definitions
+1. Data Science
+  - Interdisciplinary field that combines elements of mathematics, statistics, computer science, and knowledge in a particular application domain for the purpose of extracting meaningful information from the increasingly sophisticated array of data available in many settings
+
+#### Concepts
+1. Data Science Curriculum
+  - Probability
+  - Algorithms
+  - Statistical Inference and Modeling
+  - Computer Systems for Data Science
+  - Machine Learning
+  - Data Analysis and Visualization
+  - Data Science Ethics
+
+2. Data Science Concentrations
+  - Spatial Analysis
+  - Text Mining
+  - Speech
+  - Social Media
+  - Big Data
+  - Medical
+  - Bioinformatics
+
+3. Data Science Process
+  - Data Science follows a strictly linear process like all science
+  - Process
+    - Question
+      - Pose Hypothesis
+    - Data
+      - Data Acquisition
+      - Data Processing and Cleaning
+      - Data Management
+      - Data Storage
+      - Data Retrieval
+    - Methods
+      - Data Mining
+      - Machine Learning
+      - Regression
+      - Classification
+    - Inference
+      - Computational Statistics
+    - Presentation
+      - Visualization
+      - Graphic Design
+      - Oration
+    - Answer
+
+4. Data Science Tools
+  - Analysis
+    - Python
+    - R
+    - Java
+  - Data Mining
+    - KNIME
+    - RapidMiner
+    - Matlab
+  - Visualization
+    - Tableau
+    - Qlik
+  - General Tools
+    - Data Robot: model development
+    - SQLStream: stream processing
+    - Bansai: Deep Learning language
+    - Qubole: warehouse deployment
+
+5. Data Science Platforms
+  - SAS
+  - Cloudera
+  - Jupyter
+  - Algorithmia
+  - RapidMiner
+
+6. DataOps
+  - Similar to DevOps, DataOps provide/create tools and platforms to support Data Engineers handle large volumes of data, perform repetitive tasks by continuously monitoring the data pipeline.
+
+#### Questions
+  - Fall 2016 Question 9
+
 ---
 ### Data Mining
 
@@ -570,6 +669,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
    - give real valued output that is a smooth and bounded function of total input
    - Nice derivatives which help learning
    - Can act as probability distribution for the output
+   - Also used in logistic regression for classification
 
 8. NN: Backpropagation
   - Method learning weights
@@ -657,6 +757,9 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 #### Questions
   - Fall 2016 Question 2
+  - Fall 2016 Question 4
+  - Fall 2016 Question 5
+
 ---
 ### TensorFlow
 
@@ -800,6 +903,8 @@ xnew <- edit(data.frame())
 
 #### Questions
   - Spring 2017 Question 3
+  - Fall 2016 Question 10
+
 ---
 ### WEKA
 
