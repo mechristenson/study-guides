@@ -1,5 +1,5 @@
 # CSCI 585: Database Systems
-## Midterm Study Guide
+## Final Study Guide
 
 ### Test Details:
   - Wednesday December 12th, 2018
@@ -35,6 +35,57 @@
 #### Definitions
 1. Spatial Database
   - A database that is optimized to store and query data related to objects in space, including points, lines and polygons.
+  - Comprised of Spatial Data Types, Spatial Operators and Functions, and Spatial Indices
+  - Uses include: crime data, land use, traffic, space, genes, military strategy
+
+2. Types of Spatial Data
+  - Points, vertices, nodes
+  - Polylines, arcs, linestrings
+  - Polygons, regions
+  - Pixels, raster
+
+3. GIS - Geographic Information System
+  - Specific application architecture built on top of a general SDBMS
+  - Used for: search, location analysis, terrain analysis, flow analysis, distribution, spatial analysis, measurements
+  - Platforms
+    - OpenLayers
+    - ESRI: ArcGIS
+    - QGis
+    - MapBox
+    - GIS Cloud
+
+4. Spatial Relationships
+  - In 1D (and higher), spatial relationships can be expressed with the following terms:
+    - Touch
+    - Inside
+    - Contains
+    - Disjoint
+    - Equals
+    - On
+    - Covers
+    - Overlaps
+
+5. Minimum Bounding Rectangles (MBRs)
+  - Bounding boxes used to estimate and compute spatial relationships between objects
+  - Used in the Filter and Refine step of Query Processing
+
+6. Oracle Spatial
+  - Oracle offers a 'Spatial' library for spatial queries
+  - Handles Spatial Data Types, Spatial Analysis and Spatial Indexing in Oracle DB, accessible through SQL
+  - Oracle Spatial Data Types: Networks (lines), Locations (points), Parcels (polygons), Imagery (raster, grids), Topological Relations (persistent topology), Addresses (geocoded points)
+  - Oracle Spatial Operators:
+    - Filter (find objects by primary filter)
+    - Relate (find all objects by primary and secondary (relational i.e. touch) filter)
+    - NN (find n nearest neighbors)
+    - WithinDistance (find all objects within a distance of target)
+  - Spatially Indexed with R-Trees
+
+7. Postgres PostGIS Application
+  - Spatial DB functionality add-on for Postgres
+  - Supports Queries: distance, equals, disjoint, intersect, touches, crosses, overlaps, contains, length, area, centroid
+
+8. Google KML
+  - Google's format for encoding spatial data
 
 #### Concepts
 1. Characteristics of Geographic Data
@@ -48,6 +99,91 @@
   - Two conceptions of space:
     - Entity View: space as an area filled with a set of discrete objects
     - Field View: space as an area covered with essentially continuous surfaces
+
+3. Types of Spatial Relationships
+  - Topology-Based - using definitions of boundary, interior, exterior
+  - Metric-Based - distance/euclidean, angle measurements
+  - Direction-Based
+  - Network-Based - shortest path
+
+4. Spatial Indexing
+  - Vastly speeds up processing of spatial data
+  - B-Trees (self-balancing generalized binary search tree (nodes can have more than 2 leaves))
+    - Issues
+      - Sorting is not naturally defined on spatial data
+      - Many efficient search method are based on sorting data sets
+    - Solution
+      - Space filling curves impose an ordering on the locations in a multi-dimensional space
+  - R-Trees: Use MBRs to create a hierarchy of bounds
+  - KD-Trees: Space-partitioning data structure for organizing points in a k-dimensional space
+  - Quad Trees: Each node is a leaf node with indexed points or null, an internal node has exactly 4 children
+
+5. Query Processing
+  - Since MBRs are not exact, query processing usually takes on two steps: Filter and Refine
+    - Filter: detect all objects in filter region
+    - Refine: remove all objects whose MBRs are in region but actual geometry is not
+  - This process allows for more efficient spatial computations
+
+6. Spatial Data Visualizations
+  - Dot Map: Map with points shown for events
+  - Proportional Symbol Map: Map with different sized symbols for higher probability regions
+  - Diagram Map: Map with diagrams displaying information about a region
+  - Choropleth Map: Map with different regions colored differently based on a metric
+
+7. DBs with Spatial Extenstions
+  - Oracle: Locator, Spatial, SDO
+  - Postgres: PostGIS
+  - DB2: Spatial Datablade
+  - SQL Server: Geometric and Geodetic types
+  - MySQL: Built-in Spatial Library
+  - SQLite: SpatiaLite
+
+#### Syntax
+1. Creating Spatial Entities
+```SQL
+CREATE TABLE County(
+  Name varchar(30),
+  State varchar (30),
+  Shape Polygon
+);
+```
+
+2. Example County Border Query
+```SQL
+SELECT C1.Name
+FROM County C1, County C2
+WHERE Touch(C1.Shape, C2.Shape) = 1
+      AND C2.Name = 'Los Angeles';
+```
+
+3. Spatial Functions
+  - Returns a Geometry
+    - Union
+    - Difference
+    - Intersect
+    - XOR
+    - Buffer
+    - CenterPoint
+    - ConvexHull
+  - Returns a number
+    - Length
+    - Area
+    - Distance
+
+4. Spatial Operators
+  - Implemented as functional extensions in SQL
+  - Topological Operators
+    - Inside
+    - Touch
+    - Covers
+    - Equal
+    - Contains
+    - Disjoint
+    - Covered By
+    - Overlap Boundary
+  - Distance Operators
+    - Within Distance
+    - Nearest Neighbor
 
 #### Questions
   - Fall 2016 Question 1
@@ -539,29 +675,32 @@ xnew <- edit(data.frame())
   - Histogram/Bar Charts/Density Plot
   - Bubble Plots
 
-2. Spatial Data
+2. Mulitvariate Visualizations
+  - Visualizations that display multiple variables
+
+3. Spatial Data
   - Plotting spatial data on a map reveals patterns and trends in a direct way
   - Useful for planning purposes (travel, product placement, group detection)
 
-3. Spatio-temporal Data
+4. Spatio-temporal Data
   - Superimposing time varying data on a map reveals course, trends, etc.
 
-4. Interactivity
+5. Interactivity
   - Being able to interact with data provides more understanding
   - Can turn items on/off, drill down or roll up, explore the time dimension
 
-5. Animation
+6. Animation
   - Watching data being animated provides us with fresh perspectives
 
-6. Real-Time
+7. Real-Time
   - Real-time visualizations provides a level of immediacy/freshness/relevance/interest that is simply absent in non-real-time data.
 
-7. Networks
+8. Networks
   - Shows relationships between entities
   - Node attributes can add detail in form of labels
   - Edge attributes can quantify data
 
-8. Tools for Generating Data Visualizations
+9. Tools for Generating Data Visualizations
   - Data Science Software
     - Weka
     - KNIME
