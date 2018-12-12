@@ -512,6 +512,150 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 ---
 ### Machine Learning
+
+#### Sources:
+  - Machine Learning Lecture Notes
+  - Lecture
+
+#### Definitions
+1. Machine Learning
+  - One subset of AI
+  - Focuses on the construction and study of systems that can learn from data to optimize a performance function, such as optimizing reward or minimizing loss.
+  - Goal is to develop deep insights from data faster, extract knowledge from data with greater precision, improve the bottom line and reduce risk
+
+2. Supervised Learning
+  - Algorithms that are trained using examples where both features (inputs) and labels (outputs) are known.
+  - Linear Regression, Perceptron, Logistic Regression, Multiclass Classification, Neural Networks, SVM, Decision Trees
+
+3. Unsupervised Learning
+  - Algorithms where a system operates on unlabeled examples and try to find a hidden structure
+  - Goal is to explore data to find intrinsic structures within it using methods like clustering or dimensional reduction
+  - Euclidean Space: K-Means Clustering, Gaussian Mixtures, Principal Component Analysis
+  - Non-Euclidean Space: ISOMAP, Local Linear Embedding, Laplacian Eigenmaps, Kernel PCA
+
+4. Semisupervised Learning
+  - Algorithms operate on both labeled and unlabeled data for training
+  - Goal is unsupervised learning where labels are viewed as side information to help the algorithm find the right intrinsic structure
+  - Use cases include image analysis, textual analysis, disease detection
+
+5. Reinforcement Learning
+  - Algorithm discovers which actions yield the greatest rewards through trial and error
+  - Three primary components
+    - Agent - learner or decision maker
+    - Environment - everything the agent interacts with
+    - Actions - what the agent can do
+  - Goal is for agent to choose actions that maximise the expected reward over a given period of time
+  - Agent will reach the goal much quicker by following a good policy, so the goal in reinforcement learning is learn the best policy
+  - Use cases include robotics and navigation
+  - Markov Decision Processes, Partially Observable Markov Decision Processes
+
+6. Neural Networks
+  - A form of AI that uses neuron-like connected units to learn patterns in training data that has known outcomes, and uses the learning to be able to gracefully respond to new data
+  - Comprised of an interconnected set of weighted non-linear functions
+  - Use Cases: recognize/classify features, detect anomalies, predict exchange rates, calculate numerical values
+  - The bigger the training set, the better the learning
+  - Revolutionizing AI due to advances in:
+    - Big data to use for training
+    - Better algorithms from academic and industry research
+    - Faster cloud computing platforms and libraries
+
+7. NN: Types of Neurons (Activation Functions)
+  - Linear Neurons:
+    - input values get passed through verbatim
+  - Binary Threshold Neurons:
+    - neuron outputs a 1 only when a threshold is exceeded
+  - Rectified Linear Neurons (ReLU):
+    - outputs a positive value, or 0 otherwise
+  - Sigmoid Neurons:
+   - give real valued output that is a smooth and bounded function of total input
+   - Nice derivatives which help learning
+   - Can act as probability distribution for the output
+
+8. NN: Backpropagation
+  - Method learning weights
+  - Iteratively adjust weights starting from last hidden layer and moving to first hidden layer
+  - Aims to reduce the error between expected and actual output by finding the minimum of the quadratic loss for a given training input
+
+9. Deep Learning
+  - Specialized neural networks where we use large numbers of hidden layers, each of which learning/processing a single feature
+  - Widely used in image recognition, speech recognition, object recognition, and NLP
+
+10. Convolution
+  - A blending operation between two functions, where one function is convolved (pointwise-multiplied) with another and the results are summed
+  - Used heavily in image processing filters for blurring, sharpening, edge-detection, etc.
+
+11. Convolutional Neural Networks
+  - Biologically Inspired convolutional filters are used across a whole layer to enable to entire layer to detect a feature. Detection regions are overlapped like cells in the eye.
+  - CNN is where we represent a neurons weights as a matrix (kernel) and slide it (IP-stype) over an input to produce a convolved output
+  - Each neuron is convolved over the entire input and an output is generated from all the convolutions.
+  - The CNN process typically looks like: input -> convolution -> normalize (ReLU) -> reduce (pool) -> convolution ... -> output
+  - Example: shape detection by pieces, image detection by pieces
+  - CNN is not good for data that is not spatially laid out
+
+12. Ensemble Methods
+  - Use of multiple learning algorithms to obtain a better predictive performance than could be obtained from any of the constituent learning algorithms alone
+  - Minimize or eliminate any variances or biases between the individual learners
+#### Concepts
+1. Types of AI
+  - Type I:
+    - Reactive Machines - make optimal moves, no memory, no past experience
+    - Application of rules/logic
+    - Game trees
+  - Type II:
+    - Limited Memory - human-compiled/provided or one-shot past experience that are stored for lookup
+    - Neural networks, expert systems
+    - Current level of progress
+    - Progress to this area ended AI Winter
+  - Type III:
+    - Theory of Mind
+    - Understanding that people, createures and objects in the world can have thoughts and emotions that affect the AI program's own behavior
+  - Type IV:
+    - Self-Awareness
+    - Machines that have consciousness, can form representations about themselves
+
+2. Types of ML
+  - Supervised Learning
+  - Unsupervised Learning
+  - Semisupervised Learning
+  - Reinforcement Learning
+
+3. Building Neural Networks
+  - Create layers of neurons, where each layer is a set of neurons that feed their outputs downstream to the next layer
+  - Each layer is responsible for learning some aspect of our target, usually operate in a hierarchical fashion
+  - Layers learn by adjusting input weights so that neurons only fire when they are given "good" inputs
+
+4. Machine Learning Libraries
+  - Keras
+  - Torch
+  - CAFFE
+  - Deeplearning4j
+  - TensorFlow
+  - Spark MLib
+  - Scikit-learn
+
+5. Hardware for ML
+  - GPUs and other forms of hardware are used to accelerate deep learning
+    - Provide advantages in massively parallel processing, arbitrary speed increases from upgrading hardware
+    - work great with DNNs
+  - NVIDIA has made a framework called DIGITS (Deep Learning GPU Training System) for leveraging GPUs for DNNs
+  - Microsoft has created GPU-based network for doing face and speech recognition
+  - TPU (Tensor Flow Processing Unit) DNN chip developed by Google.
+
+6. Cloud ML
+  - NN/ML platforms are starting to emerge that package cloud storage, cloud computing, and algorithms for developing and deploying ML apps
+  - Google CoLab
+  - Google Cloud Vision API
+  - Amazon Rekognition API
+  - Amazon ML Solutions Lab
+  - FloydHub
+
+7. CapsNet
+  - Developed by Geoff Hinton to improve upon idea of CNNs
+  - CNNs can get confused by distorted images because they are not learning the correct way
+  - CapsNet takes Neural network idea and seperates neural layers into capsules where each capsule handles one type of visual stimuli, which is then designed in a unified micro-network architecture.
+
+#### Questions
+  - Fall 2016 Question 2
 ---
 ### TensorFlow
 
