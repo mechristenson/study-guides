@@ -107,14 +107,17 @@
   - Network-Based - shortest path
 
 4. Spatial Indexing
-  - Vastly speeds up processing of spatial data
+  - Vastly speeds up processing of spatial data, by allowing us to search a subset of the data
   - B-Trees (self-balancing generalized binary search tree (nodes can have more than 2 leaves))
     - Issues
       - Sorting is not naturally defined on spatial data
       - Many efficient search method are based on sorting data sets
     - Solution
       - Space filling curves impose an ordering on the locations in a multi-dimensional space
-  - R-Trees: Use MBRs to create a hierarchy of bounds
+  - R-Trees:
+    - Use MBRs to create a hierarchy of bounds
+    - Contains NN R-Trees built up to big root R Trees
+    - Smallest R-Nodes point to parents which contain them
   - KD-Trees: Space-partitioning data structure for organizing points in a k-dimensional space
   - Quad Trees: Each node is a leaf node with indexed points or null, an internal node has exactly 4 children
 
@@ -187,6 +190,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 #### Questions
   - Fall 2016 Question 1
+  - Spring 2018 Question 2
 
 ---
 ### NoSQL
@@ -253,6 +257,14 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 10. GraphDBs
   - Data structure comprised of verticies and edges
   - Neo4j, Giraph, FlockDB, Tinkerpop
+  - Most flexible way to model any data
+
+11. Triple Store DB
+  - stores triples of subject, predicate (property), object (value) to define a directed binary relation
+  - Form of graphDB
+  - issue semantic queries to search db
+  - Stardog, SparkleDB
+  - Most flexible way to model any data
 
 #### Concepts
 1. Drivers of NoSQL Movement
@@ -385,6 +397,9 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Spring 2017 Question 8
   - Fall 2016 Question 6
   - Fall 2017 Question 10
+  - Spring 2018 Question 4
+  - Spring 2018 Question 6
+  - Spring 2018 Question 8
 
 ---
 ### Big Data
@@ -434,6 +449,7 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
 
 #### Questions
   - Fall 2017 Question 9
+  - Spring 2018 Question 3
 
 ---
 ### MapReduce
@@ -553,6 +569,8 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Fall 2017 Question 5
   - Fall 2017 Question 7
   - Spring 2018 Question 1
+  - Spring 2018 Question 5
+  - Spring 2018 Question 7
 
 ---
 ### Data Science
@@ -647,6 +665,56 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Lecture
 
 #### Definitions
+1. Data Mining
+  - Science of Extracting useful information from large data sets
+  - Process of discovering relationships between parts of a dataset
+  - Uses include: predicting which customers will purchase which products, deciding insurance rates, predicting equipment failures, anticipating resource demands, customer retention, detecting fraud, etc.
+
+2. Decision Trees
+  - Classification and regression trees are ml methods for constructing prediction models from data
+  - Models obtained by recursively partitioning the data space and fitting a simple prediction model within each partition
+
+3. K-Means Clustering
+  - Creates k clusters from input data using a measure of closeness
+  - Unsupervised algorithm
+
+4. Support Vector Machine
+  - SVM partitions data into two sets by slicing the data with a hyperplane that maximizes the gap on either side of it
+  - Equidistant data points closest to hyperplane are support vectors
+
+5. A Priori
+  - Looks for hidden relationships in large data sets
+  - Generates association rules between data
+
+6. K Nearest Neighbors
+  - Picks k nearest neighbors to an unclassified data point and uses them to label new data
+
+7. Hierarchical Clustering
+  - Seperates data set into hierarchical clusters by merging smaller clusters into bigger superclusters or dividing large clusters into smaller ones
+
+8. Ensemble Methods
+  - Use of multiple learning algorithms to obtain a better predictive performance than could be obtained from any of the constituent learning algorithms alone
+  - Minimize or eliminate any variances or biases between the individual learners.
+  - Method of combining learners is called boosting
+  - Example: Adaboost, Random forest (forest of decision trees)
+
+9. (Non) Linear Regression
+  - Given training pairs for a features and label, create a line (or polynomial) to best fit the data
+
+10. Logistic Regression
+  - Classification algorithm where we compute regression coefficients corresponding to a decision boundary, then use that to compute an outcome for new data, and finally transform the outcome to a logistic regression value between 0 and 1 to predict a binary outcome
+
+11. Naive Bayes
+  - Probability based supervised classifier algorithm
+  - Assume that all features are statistically independent of eachother, use that to assign probabilities to each class and then predict new features
+
+12. Expectation Maximization
+  - EM is an algorithm that can solve for hidden variables in a model by using collected data
+  - Process
+    - start with random values for the model parameters
+    - use these compute probabilites for all possible values for each hidden var, and then do a weighted average to compute the best value for each latent var
+    - use the hidden vars values to improve the model parameters
+    - iterate the above two steps till values converge
 
 #### Concepts
 1. Data Mining vs Statistics
@@ -659,7 +727,18 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Data Mining stops with the discovery of patterns in data.
   - In Machine Learning, we publish the model that we mine, and continue processing new incoming data, using that model.
 
+3. Data Mining Cycle
+  - Starting with data, mining leads to discovery, which leads to action, which leads to new data
+  - Ask, Prepare, Explore, Model, Implement, Act, Evaulate, Repeat
+
+4. Data Mining Algorithm Categories
+  - Classification: involves labeling data
+  - Clustering: involves grouping data
+  - Regression: involves coupling data
+  - Association: involves relating data
+
 #### Questions
+  - Fall 2016 Question 2
   - Spring 2017 Question 1
 
 ---
@@ -822,12 +901,12 @@ WHERE Touch(C1.Shape, C2.Shape) = 1
   - Step Size - if we don't decrease the step size of a gradient descent algorithm, we may overstep the minimum and end up with a weird solution
 
 #### Questions
-  - Fall 2016 Question 2
   - Fall 2016 Question 4
   - Fall 2016 Question 5
   - Fall 2017 Question 2
   - Fall 2017 Question 3
   - Fall 2017 Question 6
+  - Spring 2018 Question 9
 
 ---
 ### TensorFlow
@@ -1098,3 +1177,4 @@ sunny, 6, yes
 ---
 ### Questions for Saty:
   - Spring 2017 Question 1: In Machine Learning we do make inferences about a larger population, like Statistics.
+  - Spring 2018 Question 7
