@@ -27,8 +27,7 @@
 #### Definitions
 1. Weak Entity
   - An entity that cannot be uniquely identified by its own attributes
-  - Must use a foreign key in conjunction with its own attributes to create a primary
-    key
+  - Must use a foreign key in conjunction with its own attributes to create a primary key
 
 2. Weak (Non-Identifying) Relationship
   - A relationship between two entities where neither entity relies on the other's
@@ -125,6 +124,7 @@
   - EX: SELECT names
           FROM products
           ORDER BY names DESC
+
 #### Concepts
 
 ---
@@ -639,6 +639,7 @@ Rules:
 - Dimensions - qualifying characteristics that provide additional perspectives to a
   given fact
 - Attributes - used to search, filter, and classify facts
+- Attribute Hierarchy
 
 ###### Representation
 - Facts and dimensions represented by physical tables in data warehouse database
