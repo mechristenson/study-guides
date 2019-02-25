@@ -1,0 +1,209 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+
+\title{CSCI 567 Important Equations}
+\author{Mark Christenson}
+\date{February 2019}
+\begin{document}
+\maketitle
+
+\section{Nearest Neighbor Classifier}
+\paragraph{Nearest Neighbor Logic}
+\paragraph{}
+\(x(1) = x_{nn(x)}\),\\\\
+where \(nn(x)\epsilon[N]=\{1,2,...,N\}\), i.e. the index to one of the training instances,
+\paragraph{}
+\(nn(x) = argmin_{n\epsilon[N]}||x-x_n||_2=argmin_{n\epsilon[N]}\sqrt{\sum_{d=1}^D(x_d-x_{nd})^2}\),\\\\
+where argmin means finding the argument (in this case, n) that minimizes the function/expression and \(||.||_2\) is the L2/Euclidean distance between the two points
+\paragraph{Measuring Performance}
+\paragraph{}
+\(D^{TEST}=\{(x_1,y_1),(x_2,y_2),...,(x_3,y_3)\}\)
+\paragraph{}
+\(A^{TEST}=\frac{1}{N}\sum_nI[f(x)==y_n], \epsilon^{TEST}=\frac{1}{N}\sum_nI[f(x)\neq y_n]\),\\\\
+where I[.] is the indicator function: \(I[true] = 1\), and \(I[false] = 0\)
+\paragraph{Hyperparameter: Distance}
+\paragraph{}
+Previously, we used the Euclidean (L2) Distance:
+\paragraph{}
+\(nn(x) = argmin_{n\epsilon[N]}||x-x_n||_2\)\\\\
+There are many other alternatives that we can use, including Manhattan (L1) Distance:
+\paragraph{}
+\(||x-x_n||_1=\sum_{d=1}^D|x_d-x_{nd}|\)\\\\
+More generally, we can use LP distance (for \(p \geq 1\)):
+\paragraph{}
+\(||x-x_n||_P=(\sum_{d=1}^D(x_d-x_{nd})^P)^{\frac{1}{P}}\)
+\paragraph{Hyperparameter: K-Nearest Neighbor (KNN)}
+\paragraph{}
+1st-Nearest Neighbor: \(nn_1(x)=argmin_{n\epsilon[N]}||x-x_n||_2\)\\
+2nd-Nearest Neighbor: \(nn_2(x)=argmin_{n\epsilon[N]-nn_1(x)}||x-x_n||_2\)\\
+3rd-Nearest Neighbor: \(nn_3(x)=argmin_{n\epsilon[N]-nn_1(x)-nn_2(x)}||x-x_n||_2\)\\
+Set of K-Nearest Neighbor: \(knn(x)=\{nn_1(x), nn_2(x),..., nn_K(x)\}\)\\\\
+Note that with \(x_k=x_{nn_k(x)}\), we have:\\\\
+\(||x-x(1)||_2^2\leq||x-x(2)||_2^2\leq...||x-x(K)||_2^2\)
+\paragraph{Classification Rule}
+\paragraph{}
+Every neighbor votes, naturally xn votes for its label yn.\\
+Aggregate everyone's vote on a class label, c
+\paragraph{}
+\(v_c=\sum_{n\epsilon knn(x)} I(y_n==c), \forall c \epsilon[C]\)\\\\
+Predict with the majority
+\paragraph{}
+\(y=f(x)=argmax_{c\epsilon[C]}v_c\)
+\paragraph{Hyperparameter: Preprocessing Data}
+\paragraph{}
+One method of normalizing our data is as follows:\\
+Compute the means and standard deviations in each feature
+\paragraph{}
+\(\hat{x_d} = \frac{1}{N}\sum_nx_{nd}, s_d^2=\frac{1}{N-1}\sum_n(x_{nd}-\hat{x_d})^2\)\\\\
+Scale the feature accordingly
+\paragraph{}
+\(x_{nd} = \frac{x_{nd}-\hat{x_d}}{s_d}\)
+
+
+\section{Math Notes}
+\subsection{Vector Distances}
+\subsubsection{$L_1\;Norm$}
+Definition: The Manhattan distance of a vector from another vector.\\
+Syntax: $||.||_1$\\
+Formally, $||x-x_n||_1 = \sum^D_{d=1}{|x_d - x_{nd}|}$
+
+\subsubsection{$L_2\;Norm$}
+Definition: The Euclidean distance of a vector from another vector.\\
+Syntax: $||.||_2$\\
+Formally, $||x-x_n||_2 = \sqrt{\sum^D_{s=1}{(x_d - x_{nd})^2}}$\\
+Note: $||x||_2^2 = x \cdot x $
+
+\subsubsection{$L_P\;Norm$}
+Definition: The Euclidean distance of a vector from another vector.\\
+Syntax: $||.||_P$\\
+Formally, $||x-x_n||_P = (\sum^D_{s=1}{(x_d - x_{nd})^P})^{1/P}$
+
+\subsection{Indicator Function}
+The indicator function $I$, denotes whether an expression is true or not\\
+- If x is true: I(x) = true\\
+- If x is false: I(x) = false
+
+\subsection{Indicator Function}
+The indicator function $I$, denotes whether an expression is true or not\\
+- If x is true: I(x) = true\\
+- If x is false: I(x) = false
+
+\subsection{Variance}
+Variance is a calculation of the deviations from the mean:\\
+\begin{align*}
+V(X) = \sigma^2 = \sum_D(x-\mu)^2 * p(x) = E[(X-\mu)^2]8
+\end{align*}
+where p(x) is the probability density function, and $\mu$ is the expected value
+
+
+\subsection{Standard Deviation}
+Standard Deviation is the square root of variance:\\
+\begin{align*}
+\sigma_x = \sqrt{\sigma_x}
+\end{align*}
+
+\subsection{Random Variable}
+A random variable is a function that maps a sample space to the set of real numbers\\
+The expected value of a random variable is what its average value would be if you ran the experiment millions of times. More formally the expected value of our random variable, X is:\\
+\begin{align*}
+E[X] = \sum{Pr(X=k) * X(k)}
+\end{align*}
+
+\subsection{Vectors}
+A vector is a tuple of one or more values called scalars. Vectors are often represented using a lowercase character such as v; for example:
+\begin{align*}
+v = (v_1, v_2, v_3)
+\end{align*}
+Where $v_1, v_2, v_3$ are scalar values.
+
+\subsubsection{Vector Addition}
+Two vectors of equal length can be added together:
+\begin{align*}
+c = a + b
+\end{align*}
+This operation is performed element-wise to result in a new vector of the same length:
+\begin{align*}
+a + b = (a_1 + b_1, a_2 + b_2, a_3 + b_3)
+\end{align*}
+
+\subsubsection{Vector Subtraction}
+Two vectors of equal length can be subtracted from one another:
+\begin{align*}
+c = a - b = a + (-b)
+\end{align*}
+This operation is performed element-wise to result in a new vector of the same length:
+\begin{align*}
+a + b = (a_1 - b_1, a_2 - b_2, a_3 - b_3)
+\end{align*}
+
+\subsubsection{Vector Multiplication}
+Two vectors of equal length can be multiplied together:
+\begin{align*}
+c = a * b
+\end{align*}
+As with addition and subtraction, this operation is performed element-wise to result in a new vector of the same length:
+\begin{align*}
+a * b = (a_1 * b_1, a_2 * b_2, a_3 * b_3)
+\end{align*}
+
+\subsubsection{Vector Divison}
+Vector division cannot be uniquely defined in terms of matricies, because there is no unique matrix solution A to the matrix equation:
+\begin{align*}
+y = Ax
+\end{align*}
+
+\subsection{Matricies}
+\subsubsection{Invertible Matricies}
+When perform an eigendecomposition, we see:
+\begin{align*}
+X^TX = U^T \left(\begin{array}{cccc}
+\lambda_1 & 0 & ... & 0\\
+0 & \lambda_2 & ... & 0\\
+... & ... & ... & ...\\
+0 & ... & \lambda_D & 0\\
+0 & ... & 0 & \lambda_{D+1}
+\end{array}\right) U
+\end{align*}
+where $\lambda_1  \geq \lambda_2  \geq ... \lambda_{D+1}  \geq 0 $\\
+The inverse is:
+\begin{align*}
+(X^TX)^{-1} = U^T \left(\begin{array}{cccc}
+\frac{1}{\lambda_1} & 0 & ... & 0\\
+0 & \frac{1}{\lambda_2} & ... & 0\\
+... & ... & ... & ...\\
+0 & ... & \frac{1}{\lambda_D} & 0\\
+0 & ... & 0 & \frac{1}{\lambda_{D+1}}
+\end{array}\right) U
+\end{align*}
+
+If some eigenvalues are 0, then the matrix is non-invertible
+
+\subsection{Taylor Approximation}
+A Taylor series is a representation of a function as an infinite sum of terms that are calculated from the values of the fucntion's derivatives at a single point.
+\subsubsection{First Order Taylor Approximation}
+\begin{align*}
+F(w) \approx F(w^{(t)}) + \nabla F(w^{(t)})^T(w-w^{(t)})
+\end{align*}
+Where $\nabla F(w)$ is the gradient, or first derivative of the vector w
+\subsubsection{Second Order Taylor Approximation}
+\begin{align*}
+F(w) \approx F(w^{(t)}) + \nabla F(w^{(t)})^T(w-w^{(t)}) + \frac{1}{2}(w-w^{(t)})^T  H_t(w-w^{(t)})
+\end{align*}
+Where $H(w)$ is the hessian, or second derivative of the vector w
+
+\subsection{Derivatives}
+\subsubsection{Natural Logarithm}
+\begin{align*}
+D_x(ln(x)) = 1/x\\
+D_x(ln(Kx)) = 1/x\\
+D_x(ln(x^2)) = 2/x
+\end{align*}
+
+\subsubsection{Exponential Function}
+\begin{align*}
+D_x(e^x)) = e^x\\
+D_x(e^{2x})) = 2e^{2x}\\
+D_x(e^{x^2})) = 2xe^{x^2}
+\end{align*}
+\end{document}
