@@ -60,6 +60,32 @@ Scale the feature accordingly
 \paragraph{}
 \(x_{nd} = \frac{x_{nd}-\hat{x_d}}{s_d}\)
 
+\section{Decision Tree}
+\paragraph{Entropy}
+\paragraph{}
+At each level of a tree, we can greedily choose the most optimal attribute to branch on by leveraging the Entropy function. Entropy is the non-negative measure of impurity in a system. Thus, at each node, we want to minimize entropy.
+\paragraph{}
+\(H(P) = -\sum_{k=1}^C P(Y=K)\log P(Y=k)\)\\\\
+Note this equation is maximized if P is uniform, (H(P)=logC): most uncertain case
+\paragraph{}
+\(H(P) = -\sum_{k=1}^C \frac{1}{C}\log \frac{1}{C}=C*\frac{1}{C}\log C = \log C\)\\\\
+Furthermore, this equation is minimized if P focuses on one class, (H(P)=0): most certain case
+\paragraph{}
+\(0 \log 0\) is defined naturally as \(lim_{z->0+}z\log z = 0\)\\\\
+Note that we can calculate the entropy of an attribute by calculating the weighted average conditional entropy of its children
+\paragraph{Information Gain}
+\paragraph{}
+Entropy is a measure of the purity. We can leverage this to generate a measure of effectiveness of an attribute. The information gain of a node n with children Values(A) is:
+\paragraph{}
+\(Gain(n, A) = Entropy(S_n) -\sum_{m\epsilon Values(A)} \frac{|S_m|}{|S_n|}Entropy(S_m)\),\\\\
+where Sn and Sm are the subsets of training examples that belong to the node n and one of its child node m respectively.\\\\
+Information Gain = entropy(parent) - [average entropy(children)]\\\\
+Gain(n, A) is the expected reduction in entropy caused by partitioning on the values of attribute A.
+\paragraph{Hyperparameter: Gini Impurity}
+\paragraph{}
+Some algoriuthms, C4.5, CART, etc, leverage a different type of impurity function. Rather than using entropy these algorithms use the gini impurity
+\paragraph{}
+\(G(P) = -\sum_{k=1}^C P(Y=k)(1-P(Y=k))\)
 
 \section{Math Notes}
 \subsection{Vector Distances}

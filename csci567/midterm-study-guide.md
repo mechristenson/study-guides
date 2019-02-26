@@ -102,6 +102,13 @@
   - Evaluate using the test data and report performance
   - Use the model to predict future/make decisions
 
+#### Problems
+  - Discussion 1 - Problem 1
+  - Discussion 1 - Problem 2
+  - Discussion 1 - Problem 3
+
+---
+
 ## Models
 
 ### Nearest Neighbor Classifier
@@ -156,6 +163,101 @@
     each feature from each feature and then dividing by the standard deviation.
     This shapes our data into a Gaussian Distribution
 
-#### Problems
+#### Practice Problems
+  - Discussion 1 - Problem 1
+  - Discussion 1 - Problem 2
+  - Discussion 1 - Problem 3
+
+### Decision Tree
+
+#### Overview
+  - Simple tree-shaped if-then model
+  - We build our tree where each node of the tree tests a specific attribute,
+  each branch from a node corresponds to one of the possible values for that
+  attribute.
+  - We calculate the label by traversing our tree model with our data point
+  until we reach a leaf. Then we assign the label (or a probability of the label
+  to our data point.)
+
+#### Key Points
+  - Parametric
+  - Supervised
+  - Decision trees represent disjunctions of conjunctions
+  - The decision tree corresponds to a classifier with boundaries
+  - It is too computationally expensive to calculate the optimal tree structure,
+  (if we have Z nodes, number_of_features^Z is the number of all possible
+  configurations). Instead we can use a greedy top-down approach to learning
+  the parameters
+
+#### Learning a Decision Tree
+  - Parameters:
+    - Structure of the tree
+      - depth, number of branches, number of nodes, etc.
+    - Test at each node
+      - Which features to test?
+      - What threshold for continuous features?
+    - The value or prediction of the leaves
+  - Methods:
+    - As we mentioned, a greedy approach is best.
+    - At each node we should choose the attribute with the most "pure" children,
+    i.e. the children with highest probabilities of a label
+    - Entropy is a non-negative measure of disorder that we can use to calculate
+    purity. Note, we want to minimize Entropy.
+
+#### ID3 Algorithm
+```
+DecisionTreeLearning(Examples, Features):
+  if Examples have the same class
+    return a leaf with this class
+  else if Features is empty
+    return a leaf with the majority class
+  else if Examples is empty
+    return a leaf with the majority class of parent
+  else
+    find the best feature, A, to split based on conditional entropy
+    Tree <- a root with test on A
+    For each value a of A:
+      Child <- DecisionTreeLearning(Examples with A=a, Features-{A})
+      add Child to Tree as a new branch
+  return Tree
+```
+
+#### Hyperparameters (Variants)
+  - Replace entropy by the Gini Impurity
+
+#### Overfitting
+  - We can run into overfitting here for a number of reasons
+    - large numbers of attributes
+    - too little training data
+    - Many kinds of "noise" (same feature but different classes, values of
+    attributes are incorrect, classes are incorrect)
+  - We can avoid overfitting in the following ways
+    - stop growing when you reach some depth or number of nodes
+    - stop growing when the data split is not statistically significant
+    - Acquire more training data
+    - remove irrelevant attributes
+    - grow a full tree and then prune it
+
+#### Pruning
+  - To avoid overfitting we can try to use pruning.
+  - Pruning is done by replacing a whole subtree by a leaf node and assigning
+  the most common class to that node.
+    - Split data into training and validation sets
+    - Grow a full tree based on training set
+    - Do pruning until its harmful
+      - Evaluate the impact on the validations set of pruning each possible node
+      - Greedily remove the node that most improves validation set accuracy
+
+#### Practice Problems
+  - Discussion 2 Problem 1
+  - Discussion 2 Problem 2
+  - Discussion 2 Problem 3
+
+### Naive Bayes
+
+#### Overview
+#### Key Points
+#### Practice Problems
+
 ---
 ## Linear Algebra
