@@ -87,6 +87,67 @@ Some algoriuthms, C4.5, CART, etc, leverage a different type of impurity functio
 \paragraph{}
 \(G(P) = -\sum_{k=1}^C P(Y=k)(1-P(Y=k))\)
 
+\section{Naive Bayes}
+\paragraph{Bayes Optimal Classifier}
+\paragraph{}
+Suppose the data \((x_n, y_n)\) is drawn from a joint distribution, p. The Bayes Optimal Classifier is:
+\paragraph{}
+\(f^*(x) = argmax_{c\epsilon[C]}P(c|x)\),\\\\
+i.e. we predict the class with the largest conditional probability\\\\
+How hard is it to learn the optimal classifier?\\\\
+Exponential, \(2^D\)
+\paragraph{Bayes Rule}
+\paragraph{}
+\(P(Y|X)=\frac{P(X|Y)P(Y)}{P(X)}\)
+\paragraph{Naive Bayes Assumption}
+\paragraph{}
+\(x_d\) are conditionally independent given y, which means:
+\paragraph{}
+\(P(x|y=c)=\prod_{d=1}^D P(x_d|y=c)\),\\\\
+reducing our complexity to linear
+\paragraph{Naive Bayes Classification Example}
+\paragraph{}
+If we want to build a spam detector, we can compute for any document x,
+\paragraph{}
+\(p(spam|x)=\frac{p(x|spam)p(spam)}{p(x)}\),\(p(ham|x)=\frac{p(x|ham)p(ham)}{p(x)}\),\\\\
+Its convenient to compute the logarithms, so we only need to compare
+\paragraph{}
+\(log[p(x|spam)p(spam)]\), versus \(log[p(x|ham)p(ham)]\),\\\\
+as the denominators are the same. Furthermore:
+\paragraph{}
+\(log[p(x|spam)p(spam)] = log[\prod_{i} p(w_i|spam)^{\#w_i}p(spam)]=\\\\\sum_{i} \#w_i \log p(w_i|spam) + \log p(spam)\),\\\\
+Thus, by leveraging the log p(spam) and log p (ham) "priors", we are back to the idea of comparing weighted sum of the number of word occurrences
+\paragraph{Naive Bayes Formal Definition}
+\paragraph{}
+Given a random variable \(X \epsilon R^D\) and a dependent variable \(Y \epsilon [C]\), the Naive Bayes model defines the joint distribution
+\paragraph{}
+\(P(X=x, Y=y)=P(Y=y)P(X=x|Y=y)=\\\\P(Y=y)\prod_{d=1}^D P(X_d = x_d|Y=y)\)
+\paragraph{How do we make predictions?}
+\paragraph{}
+Using the Naive Bayes Assumption:
+\paragraph{}
+\(P(x|y=c)=\prod_{d=1}^D P(x_d |y=c)\),\\\\
+The prediction for a new example, x is
+\paragraph{}
+\(argmax_{c\epsilon[C]}P(y=c|x)=argmax_{c\epsilon[C]}\frac{P(x|y=c)P(y=c)}{P(X)}\)\\
+\(=argmax_{c\epsilon[C]}(P(y=c) \prod_{d=1}^D P(x_d|y=c))\)\\
+\(=argmax_{c\epsilon[C]}(\ln P(y=c) + \sum_{d=1}^D \ln P(x_d|y=c))\)\\
+\paragraph{For Discrete Features}
+\paragraph{}
+For a label \(c\epsilon[C]\),
+\paragraph{}
+\(P(y=c)=\frac{|\{n:y_n=c\}|}{N}=\frac{number-of-data-points-labeled-as-c}{N}\)\\\\
+For each possible value k of a discrete feature, d
+\paragraph{}
+\(P(x_d=k|y=c)=\frac{|\{n:x_{nd}=k, y_n=c\}|}{|\{n:y_n=c\}|}\)\\\\
+They can be estimated separately
+\paragraph{For Continuous Features}
+\paragraph{}
+We can do parametric estimation via a Gaussian
+\paragraph{}
+\(P(x_d=k|y=c)=\frac{1}{\sqrt{2\pi}\sigma_{cd}}exp(-\frac{(x-\mu_{cd})^2}{2\sigma^2_{cd}})\)\\\\
+Where \(\mu_{cd}\), and \(\sigma^2_{cd}\) are the empirical mean and variance of feature d among all examples with label c.
+
 \section{Math Notes}
 \subsection{Vector Distances}
 \subsubsection{$L_1\;Norm$}

@@ -256,8 +256,18 @@ DecisionTreeLearning(Examples, Features):
 ### Naive Bayes
 
 #### Overview
-#### Key Points
+  - Calculating the Bayes Optimal Classification for a dataset is, as its name
+  suggests, the optimal classification for a dataset. However, it is
+  exponentially hard to learn the optimal classifier. If we "naively" assume
+  that all xd are conditionally independent, given y, we can reduce the
+  complexity to linear.
+  - This model is unrealistic and naive, but Naive Bayes still works very
+  well, even if the assumption is wrong.
+
 #### Practice Problems
+  - Discussion 2 Problem 4
+  - Discussion 2 Problem 5
+  - Discussion 2 Problem 6
 
 ---
 ## Linear Algebra
