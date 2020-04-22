@@ -129,84 +129,7 @@
   - Reduce
     - Aggregate, summarize, filter or transform
     - Output the result
-9. Map Reduce - Word Count Pseudo Code
-  ```input: big document
-  output: word counts
-  map(key, value):
-    // key: document name, value: text of document
-    for each word in value:
-      emit(word, 1)
-  shuffle(key)
-    // sort by key
-    return hash(key) % buckets
-  reduce(key, value):
-    // key: word, value: iterator over counts
-    result = 0
-    for each count v in values:
-      result += v
-    emit(key, result)
-    ```
-10. Map Reduce - Inverted Index
-  ```input: list of documents
-  output: words and the documents they are located in
-  map(key, value):
-    // key: document name, value: text of document
-    for each word in value:
-      emit(word, document_name)
-  shuffle(key)
-    // sort by key
-    return hash(key) % buckets
-  reduce(key, value):
-    // key: word, value: iterator over document_names
-    result = []
-    for each doc in document_names
-      result.append(doc)
-    emit(word, result)
-    ```
-11. Map Reduce - Integers divisible by 7
-  ```input: large file of integers
-  output: all unique integers that are evenly divisible by 7
-  map(k, v):
-    // key: chunk, value: list of values in chunk
-    // note: we check for uniqueness AND divisiblity in map to reduce communication cost!
-    for v in set(value_list):
-      if (v % 7) == 0:
-        emit(v, 1)
-  shuffle:
-    // group together all values for same integer:
-      emit (integer, (1, 1, 1 ...))
-  reduce(k, v):
-    // eliminate duplicates
-    emit (key, 1)
-    ```
-12. Map Reduce - Find Largest Integer
-  ```input: large file of integers
-  ouput: largest integer from file
-  map:
-    - params: (chunk_id, [ints])
-    - return: (1, max([ints]))
-  shuffle:
-    - return: (1, [max_ints])
-  reduce:
-    - params: (1, [max_ints])
-    - return: max([max_ints])
-    ```
-13. Map Reduce - Count the number of unique integers
-  ```input: large file of integers
-  output: number of distinct integers
-  map-1:
-    emit(int, 1) for unique integers
-  shuffle-1:
-    combine (int, (1, 1, 1...)) results from map-1
-  reduce-1:
-    eliminate duplicates, return (int, 1)
-  map-2:
-    input: chunk of unique integers from reduce-1
-    count number of unique ints: (1, 3, 5) => (1, 3)
-  reduce-2:
-    sum all counts from map-2
-    ```
-14. Combiners
+9. Combiners
   - Often a map task will produce many pairs with the same key
   - We can use combiners to aggregate all values in some way so we reduce computation cost on the reducers
   - We can save network time by pre-aggregating values inside the mapper
@@ -218,28 +141,25 @@
   - When to use?
     - Can be used if a reduce function is commutative and associative
     - If the reducer cannot be used directly as combiner, we can still write a third function to use like average
-15. Map Reduce with Combiner - Compute Average
-  map: produces (key, (number of ints, sum of ints) for each chunk
-  reduce: sums the sum of integers and the number of integers, calculates average
-16. Map Reduce Environment
+10. Map Reduce Environment
   - Partitions input data
   - Schedules programs execution across a set of nodes
   - Performs groupByKey step
   - Handles machine failures
   - Manages inter-machine communication
-17. Map Reduce Data Flow
+11. Map Reduce Data Flow
   - Input and final output are stored on a DFS
     - Scheduler tries to scheduler map tasks "close" to the physical storage location of the data
   - Intermediate results are stored on the local filesystem of map workers
   - Output can be an input to another MR task
-18. Coordination: Master
+12. Coordination: Master
   - Master node handles coordination
     - Task status: idle, in-progress, completed
     - Idle tasks: get scheduled as workers become available
     - When a map task completes, it sends the master the location and sizes of its R intermediate files, one for each reducer
     - Master pushes this info to reducers
     - Pings workers periodically to detect failures
-19. Dealing with Failures
+13. Dealing with Failures
   - Map Worker Failure
     - Map tasks completed or in-progress at worker are reset to idle
     - Idle tasks are eventually rescheduled to another worker
@@ -248,7 +168,7 @@
     - Idle reduce tasks are restarted on other workers
   - Master failure
     - Map-reduce task is aborted and client is notified
-20. How Many Map and Reduce Jobs
+14. How Many Map and Reduce Jobs
   - Rule of thumb:
     - Make M much larger than the number of nodes in the cluster
     - One DFS cluster per map task is common
@@ -257,12 +177,140 @@
     - Output is spread across R files
   - Google Example:
     - 200,000 map tasks and 5000 reduce tasks on 2000 machines
-21. Map Reduce Refinements:
+15. Map Reduce Refinements:
   - Combiners (See Above)
   - Partition Function
     - Control how keys get partitioned
       - Reduce needs to ensure that records with the same intermediate key end up at the same worker
     - System uses a default partition function hash(key) % R, sometimes it is useful to override this.
+16. Good Problems for Map Reduce
+  - Big data (Terabytes not Gigabytes)
+  - Don't need fast response time
+    - Good pre-computation engine
+  - Applications that work in batch mode
+  - Runs over entire data set
+  - Does not provide good support for random access to dataset
+  - Data should be expressible as k,v pairs without losing context or dependencies
+    - Graphs are hard
+17. Map Reduce Examples
+  1. Word Count
+    ```input: big document
+    output: word counts
+    map(key, value):
+      // key: document name, value: text of document
+      for each word in value:
+        emit(word, 1)
+    shuffle(key)
+      // sort by key
+      return hash(key) % buckets
+    reduce(key, value):
+      // key: word, value: iterator over counts
+      result = 0
+      for each count v in values:
+        result += v
+      emit(key, result)
+      ```
+  2. Inverted Index
+    ```input: list of documents
+    output: words and the documents they are located in
+    map(key, value):
+      // key: document name, value: text of document
+      for each word in value:
+        emit(word, document_name)
+    shuffle(key)
+      // sort by key
+      return hash(key) % buckets
+    reduce(key, value):
+      // key: word, value: iterator over document_names
+      result = []
+      for each doc in document_names
+        result.append(doc)
+      emit(word, result)
+      ```
+  3. Integers divisible by 7
+    ```input: large file of integers
+    output: all unique integers that are evenly divisible by 7
+    map(k, v):
+      // key: chunk, value: list of values in chunk
+      // note: we check for uniqueness AND divisiblity in map to reduce communication cost!
+      for v in set(value_list):
+        if (v % 7) == 0:
+          emit(v, 1)
+    shuffle:
+      // group together all values for same integer:
+        emit (integer, (1, 1, 1 ...))
+    reduce(k, v):
+      // eliminate duplicates
+      emit (key, 1)
+      ```
+  4. Find Largest Integer
+      ```input: large file of integers
+      ouput: largest integer from file
+      map:
+        - params: (chunk_id, [ints])
+        - return: (1, max([ints]))
+      shuffle:
+        - return: (1, [max_ints])
+      reduce:
+        - params: (1, [max_ints])
+        - return: max([max_ints])
+        ```
+  5. Count the number of unique integers
+      ```input: large file of integers
+      output: number of distinct integers
+      map-1:
+        emit(int, 1) for unique integers
+      shuffle-1:
+        combine (int, (1, 1, 1...)) results from map-1
+      reduce-1:
+        eliminate duplicates, return (int, 1)
+      map-2:
+        input: chunk of unique integers from reduce-1
+        count number of unique ints: (1, 3, 5) => (1, 3)
+      reduce-2:
+        sum all counts from map-2
+        ```
+  6. Map Reduce with Combiner - Compute Average
+      ```map: produces (key, (number of ints, sum of ints) for each chunk
+      reduce: sums the sum of integers and the number of integers, calculates average
+      ```
+  7. Relational Join
+      ```map:
+          key: key used for join, value: tuple with all fields from the table
+          reduce: emit joined values
+          emit (key, value) pair
+      combine:
+        group together all values with each key
+      reduce:
+        emit joined values
+      ```
+  8. Matrix Multiplication - One Phase
+    ```input:
+      - A: LxM matrix
+      - B: MxN matrix
+    output:
+      - C: LxN Matrix
+    map:
+      for each element (i,j) of A, emit ((i,k), A[i,j]) for k 1..N
+      for each element (j,k) of B, emit ((i,k), B[j,k]) for k 1..N
+    reduce:
+      C[i,k] = sum_j(A[i,j] x B[j,k])
+    ```
+  9. Matrix Multiplication - Two Phase
+    ```phase 1: multiply appropriate values
+    map 1:
+      for each matrix element A[i, j], emit(j, ('A', i, A[i,j]))
+      for each matrix element B[j, k], emit(j, ('B', k, A[i,k]))
+    reduce 1:
+      for each key j, produce all possible products
+      for each value of (i,k) emit ((i,k), (A[i,j] * B[j,k]))
+    phase 2: add up values
+    map 2:
+      Let the pair of ((i,k), (A[i,j] * B[j,k])) pass through
+    reduce 2:
+      For each (i,k), add up the values, emit ((i,k), SUM(values))
+    ```
+
 
 #### Questions
 ---
