@@ -130,7 +130,7 @@
     - Aggregate, summarize, filter or transform
     - Output the result
 9. Map Reduce - Word Count Pseudo Code
-  input: big document
+  ```input: big document
   output: word counts
   map(key, value):
     // key: document name, value: text of document
@@ -145,8 +145,9 @@
     for each count v in values:
       result += v
     emit(key, result)
+    ```
 10. Map Reduce - Inverted Index
-  input: list of documents
+  ```input: list of documents
   output: words and the documents they are located in
   map(key, value):
     // key: document name, value: text of document
@@ -161,8 +162,9 @@
     for each doc in document_names
       result.append(doc)
     emit(word, result)
+    ```
 11. Map Reduce - Integers divisible by 7
-  input: large file of integers
+  ```input: large file of integers
   output: all unique integers that are evenly divisible by 7
   map(k, v):
     // key: chunk, value: list of values in chunk
@@ -176,8 +178,9 @@
   reduce(k, v):
     // eliminate duplicates
     emit (key, 1)
+    ```
 12. Map Reduce - Find Largest Integer
-  input: large file of integers
+  ```input: large file of integers
   ouput: largest integer from file
   map:
     - params: (chunk_id, [ints])
@@ -187,8 +190,9 @@
   reduce:
     - params: (1, [max_ints])
     - return: max([max_ints])
+    ```
 13. Map Reduce - Count the number of unique integers
-  input: large file of integers
+  ```input: large file of integers
   output: number of distinct integers
   map-1:
     emit(int, 1) for unique integers
@@ -201,6 +205,7 @@
     count number of unique ints: (1, 3, 5) => (1, 3)
   reduce-2:
     sum all counts from map-2
+    ```
 14. Combiners
   - Often a map task will produce many pairs with the same key
   - We can use combiners to aggregate all values in some way so we reduce computation cost on the reducers
