@@ -194,6 +194,7 @@
     - Graphs are hard
 17. Map Reduce Examples
 
+
   1. Word Count
 
     ```input: big document
