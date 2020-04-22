@@ -192,8 +192,8 @@
   - Does not provide good support for random access to dataset
   - Data should be expressible as k,v pairs without losing context or dependencies
     - Graphs are hard
-17. Map Reduce Examples
 
+#### Map Reduce Examples
 
   1. Word Count
 
