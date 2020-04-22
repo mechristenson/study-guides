@@ -102,10 +102,22 @@
   - Evaluate using the test data and report performance
   - Use the model to predict future/make decisions
 
+### Classification vs Regression
+  - Classification is a problem of finding a mapping function f from training
+  data (x in R^D) to discrete output variables (y in C)
+    - The output variables are called labels or classes or categories
+    - The mapping function predicts the class for a given observation
+    - The classification accuracy is computed as the percentage of correctly
+    classified examples out of all examples
+  - Regression is a problem of finding a mapping function f from training data
+  (x in R^D) to a continuous output variable (y in R)
+    - The output variable is a continuous quantity
+    - Regression predictions can be evaluated using the mean squared error
+
 #### Problems
-  - Discussion 1 - Problem 1
-  - Discussion 1 - Problem 2
-  - Discussion 1 - Problem 3
+  - Discussion 1 - Problem 4
+  - Discussion 1 - Problem 5
+  - Discussion 1 - Problem 6
 
 ---
 
@@ -129,6 +141,7 @@
   naively
   - Need to carry the training data around
   - Choosing the right hyperparameters can be laborious
+  - When calculating label for a data point, don't consider other test points
 
 #### Measuring Performance
   - We can measure performance by calculating the number of points correctly (or
@@ -247,6 +260,7 @@ DecisionTreeLearning(Examples, Features):
     - Do pruning until its harmful
       - Evaluate the impact on the validations set of pruning each possible node
       - Greedily remove the node that most improves validation set accuracy
+    - Do not consider leaves when pruning
 
 #### Practice Problems
   - Discussion 2 Problem 1
@@ -263,11 +277,52 @@ DecisionTreeLearning(Examples, Features):
   complexity to linear.
   - This model is unrealistic and naive, but Naive Bayes still works very
   well, even if the assumption is wrong.
+  - To make a prediction, we calculate the probability of each xd given y, and
+  then select the maximum value of those probabilities.
 
 #### Practice Problems
   - Discussion 2 Problem 4
   - Discussion 2 Problem 5
   - Discussion 2 Problem 6
 
+### Linear Regression
+
+#### Overview
+  - Regression with Linear Models
+  - Aim to predict a value, y from a set of values, x, using a linear function
+  - Our goal is to pick the model (unknown parameters) that minimizes the
+  average/total prediction error
+
+#### Measuring Error
+  - Classification Error (0-1 loss) is inappropriate for continuous outcomes
+  - We can look at absolute error, |prediction - actual|, or squared error
+  (prediction - actual)^2
+
+#### Goal of Linear Regression
+  - Our goal is to minimize the total squared error
+  - To do this we can minimize the euclidean distance with our Residual Sum of
+  Squares (RSS) function, or find the least squares solution
+  - Either way, we reduce our machine learning problem to a optimization problem
+
+#### Case: D=0
+  - When we set D=0, we only have one variable to calculate, w0, our intercept
+  - Thus, f ends up as a horizontal line
+  - if we use RSS, f is the average, if we use absolute error, its the median
+
+#### Case: D=1
+  - When we set D=1, our goal becomes to find stationary points, i.e. points
+  with zero gradient.
+  - In general, stationary points are not necessarily minimizers, but for convex
+  objects, it is true.
+
+#### General Case
+  - Generally, we leverage multivariate calculus to find the stationary points
+  from the RSS function
+  - This has a closed form solution where the gradient of the RSS function is
+  is equal to (X^TX)w-X^Ty=0, or w*=(X^TX)^-1-X^Ty, where X^TX is called the
+  covariance matrix
+  - Note the closed form solution applies for D=0 and D=1 as well.
+
+#### Practice Problems
 ---
 ## Linear Algebra

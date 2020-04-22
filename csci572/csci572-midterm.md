@@ -236,6 +236,11 @@
     - 401 Unauthorized
     - 501 Not Implemented
 
+10. Avoiding Spider Traps
+  - Remove any ID query strings from indexed urls to avoid re-visiting pages based
+    on session id
+  - Trim url length if it becomes too long
+
 #### Questions
   - Spring 2012 Question 2, 3, 7, 22, 23, 30
   - Spring 2013 Question 11, 14, 28, 40
