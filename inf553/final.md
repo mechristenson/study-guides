@@ -193,7 +193,9 @@
   - Data should be expressible as k,v pairs without losing context or dependencies
     - Graphs are hard
 17. Map Reduce Examples
+
   1. Word Count
+
     ```input: big document
     output: word counts
     map(key, value):
@@ -210,7 +212,9 @@
         result += v
       emit(key, result)
       ```
+
   2. Inverted Index
+
     ```input: list of documents
     output: words and the documents they are located in
     map(key, value):
@@ -227,7 +231,9 @@
         result.append(doc)
       emit(word, result)
       ```
+
   3. Integers divisible by 7
+
     ```input: large file of integers
     output: all unique integers that are evenly divisible by 7
     map(k, v):
@@ -243,7 +249,9 @@
       // eliminate duplicates
       emit (key, 1)
       ```
+
   4. Find Largest Integer
+
       ```input: large file of integers
       ouput: largest integer from file
       map:
@@ -255,7 +263,9 @@
         - params: (1, [max_ints])
         - return: max([max_ints])
         ```
+
   5. Count the number of unique integers
+
       ```input: large file of integers
       output: number of distinct integers
       map-1:
@@ -270,11 +280,15 @@
       reduce-2:
         sum all counts from map-2
         ```
+
   6. Map Reduce with Combiner - Compute Average
+
       ```map: produces (key, (number of ints, sum of ints) for each chunk
       reduce: sums the sum of integers and the number of integers, calculates average
       ```
+
   7. Relational Join
+
       ```map:
           key: key used for join, value: tuple with all fields from the table
           reduce: emit joined values
@@ -284,7 +298,9 @@
       reduce:
         emit joined values
       ```
+
   8. Matrix Multiplication - One Phase
+
     ```input:
       - A: LxM matrix
       - B: MxN matrix
@@ -296,7 +312,9 @@
     reduce:
       C[i,k] = sum_j(A[i,j] x B[j,k])
     ```
+
   9. Matrix Multiplication - Two Phase
+
     ```phase 1: multiply appropriate values
     map 1:
       for each matrix element A[i, j], emit(j, ('A', i, A[i,j]))
@@ -310,7 +328,6 @@
     reduce 2:
       For each (i,k), add up the values, emit ((i,k), SUM(values))
     ```
-
 
 #### Questions
 ---
