@@ -340,6 +340,95 @@
   - [Book] Chapter 6: Frequent Itemsets
 
 #### Concepts
+1. Market Basket Model
+  - Identify items that are bought together by sufficiently many customers
+  - Components
+    - A large set of items, e.g. things sold in a supermarket
+    - A large set of baskets
+    - Each basket is a small subset of items
+  - Want to discover association rules between items
+  - Want to focus on common events
+2. Applications of the Market Basket Model
+  - Identify items bought together
+    - items: products
+    - baskets: set of products someone bought in a trip to the store
+  - Plagarism detection
+    - baskets: sentences
+    - items: documents containing those sentences
+    - look for items that appear together in several baskets
+      - documents that share sentences
+  - Identify related concepts in web documents
+    - items: words
+    - baskets: web pages
+  - Drug Interactions
+    - baskets: patients
+    - items: drugs and side effects
+3. Support
+  - The support for itemset i is the number of baskets containing all items in I
+  - Given a support threshold s, sets of items that appear in at least s baskets are called "Frequent Itemsets"
+4. Association Rules
+  - If-then rules about the contents of baskets
+  - {i1,... ik} -> j means if a basket contains all of items i1...ik, then its likely to contain j
+5. Confidence
+  - Probability of j given i1..ik
+  - Ratio of support: (support for I AND j) / (support for I)
+  - We want to identify association rules with high confidence
+6. Interest
+  - Not all high confidence rules are interesting
+  - Interest of association rule I->j: difference between its confidence and the fraction of baskets that contain j
+  - Interest(I->j) = conf(I->j) - Pr[j]
+  - Interesting rules are those with high positive or negative values
+  - High positive/negative interest means the presence of I encourages or discourages the presence of j
+7. Finding Useful Association rules
+  - Problems usually state: find all association rules with support >= s and confidence >= c
+  - Most work is in calculating frequent itemsets
+  - Note: if {i} -> j has high support and confidence, then both {i} and {i,j} are frequent
+  - Assume that there are not too many frequent itemsets or candidates for high support, high confidence rules
+  - We should adjust the support threshold to avoid having so many frequent itemsets that we can't act on them
+8. Naive Frequent Item Algorithm
+  - Read file once, counting into main memory, the occurrences of each pair
+  - Number of pairs in a basket of n items: n choose 2, (n! / (k!(n-k)!))
+  - This builds quickly: number of pairs in all baskets ~#items^2
+  - If you can't store all pairs, you can't use this algorithm
+  - Two approaches:
+    - Count all pairs in triangular matrix
+      - requires only 4bytes/pair, but requires a count for each pair
+    - Keep a table of triples [i,j,c] = count of the pair of items
+      - requires 12 bytes but only for pairs with count >0
+9. Naive Triangle Matrix Approach
+  - N = total number of items
+  - Order each pair so i<j
+  - Keep pair counts in lexicographical order
+  - Every time you see a pair, increment that position
+  - Total number of pairs: n(n-1)/2, total bytes = 2n^2
+10. Triples Approach
+  - Beats approach 1 if fewer than 1/3 of possible pairs actually occur in the market basket data
+11. A-Priori Algorithm
+  - Simple solution when we cannot fit all item pairs into memory
+  - Key idea: monotonicity, if a set of items i appears at least s times, so does every subset J of I
+  - Key idea: contrapositive, If item i does not appear in s baskets, then no pair including i can appear in s baskets
+  - Algorithm:
+  ```pass1: read baskets and count in main memory the occurrences of each item
+  identify frequent itemsets of size 1
+
+  pass2: find all candidate pairs of frequent items of size 1 and count them
+  ```
+  - Main Memory
+    - pass1: item counts
+    - pass2: frequent items, counts of pairs of frequent items
+  - Can use triangular matrix method if we re-number frequent items 1,2... and keep a map
+12. General A-Priori Algorithm
+  - For each k we construct two sets of k-tuples:
+    - Candidate K-tuples
+    - Frequent k-tuples
+  ```- Steps:
+    - Count support of candidate itemsets
+    - Prune non-frequent itemsets
+    - Generate itemsets for next iteration
+      - Repeat if candidate itemsets exist
+      - Return frequent itemsets if no more candidates exist
+  ```
+13. 
 
 #### Questions
 ---
@@ -358,6 +447,7 @@
 
 #### Sources
   - [Lec] 2/24/20
+
   - [Lec] 3/2/20
   - [Book] Chapter 9: Recommendation Systems
 
