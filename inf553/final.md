@@ -638,7 +638,65 @@ For each row r
     - Check only candidate pairs for similarity
     - False positives: dissimilar pairs that hash to the same bucket
     - False negatives: truly similar pairs that do not hash to the same bucket for at least one of the hash functions
-
+```
+Partition signature matrix M into b bands with r rows per band
+For each band, hash its portion of each column to a hash table with k buckets
+  - Make k as large as possible
+  - Use a separate bucket array for each band so columns with same vector in diff bands don't hash to same bucket
+  - Candidate pairs are those that hash to the same bucket for at least one band
+Tune M b and r to catch most similar pairs but few non-similar pairs
+Verify in main memory if candidate pairs really have similar signatures
+Optional: verify in data if candidate pairs really represent similar documents
+```
+7. Analysis of Banding Technique
+  - With b bands of r rows each
+  - Pair of documents have jaccard similarity t
+  - Probability that all rows in a band are equal = t^r
+  - Probability that some row in a band is unequal = 1 - t^r
+  - Probability that no band has rows that are all equal = (1 - t^r)^b
+  - Probability of being a candidate pair = 1 - ((1 - t^r)^b)
+  - To avoid false negatives -> more bands less rows -> more opportunities to match
+  - To avoid false positives -> less bands more rows -> harder to match and less opportunities
+8. Banding Trade off Graphs
+  - General Graph
+    - Probability of becoming a candidate pair on the y axis
+    - Jaccard Similarity of two sets on the x-axis
+  - Ideal Graph
+    - Vertical line representing similarity threshold s
+      - If t < s (left of the line) no chance of sharing a bucket
+      - If t > 1 (right of the line) 100% chance of sharing a bucket
+  - 1 Band of 1 Row
+    - Diagonal line x=y
+  - B bands of R rows
+    - S-curve
+      - Less than support and s-curve: true negative (not similar, not cand pair)
+      - Less than support and greater than s-curve: false positive (cand pair but not similar)
+      - Greater than support and less than s-curve: false negative (not cand pair but similar)
+      - Greater than support and s-curve: true positive (cand pair, similar)
+9. Families of Functions for LSH
+  - Families of functions (including minhash functions) that can serve to produce candidate pairs efficiently
+  - Three conditions for family of functions
+    - More likely to make close pairs be candidate pairs than distant pairs
+    - Statistically independent
+    - Efficient in two ways
+      - Able to identify candidate pairs in much less time than to look at all pairs
+      - Combinable to build functions better at avoiding false positives and negatives
+  - A family H of hash functions is said to be (d1, d2, p1, p2)-sensitive if for any x and y in S
+    - If d(x,y) <= d1, then prob over all h in H, that h(x) = h(y) is at least p1
+    - If d(x,y) >= d2, then prob over all h in H, that h(x) = h(y) is at most p2
+    - Note: we say nothing about what happens when the distance between items is between d1 and d2
+      - We can make d1 and d2 as close as we wish
+- Applications of LSH
+  - LSH for Fingerprints
+    - Place grid over fingerprint and normalize
+    - Represent finger prints by set of gridpoints where minutiae are found
+      - ridges merging or ridge ending
+    - Make a bit vector for each fingerprint's set of grid points with minutiae
+    - Optional: minhash bit vectors to obtain signatures
+    - Many-to-many problem: take db of prints and check if there are any pairs that represent the same individual
+    - Many-to-one problem: compare a fingerprint at a crime scene to a db of finger prints
+  - Finding same/similar news articles
+    - define a shingle to be a stop word plus the next two words -> avoids ads
 
 #### Sources
   - [Lec] 2/10/20
