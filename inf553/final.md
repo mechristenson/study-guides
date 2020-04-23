@@ -577,6 +577,13 @@ Process whole file and construct the negative border from frequent itemsets
 #### Questions
 ---
 ### Shingling, Minhashing, Locality Sensitive Hashing
+
+#### Sources
+  - [Lec] 2/10/20
+  - [Lec] 2/18/20
+  - [Book] Chapter 3: Finding Similar Items
+
+#### Concepts
 1. Finding Similar Sets
   - Find near-neighbors in high-dimensional space
   - Common Problems:
@@ -689,7 +696,7 @@ Optional: verify in data if candidate pairs really represent similar documents
 - Applications of LSH
   - LSH for Fingerprints
     - Place grid over fingerprint and normalize
-    - Represent finger prints by set of gridpoints where minutiae are found
+    - Represent finger prints by set of grid points where minutiae are found
       - ridges merging or ridge ending
     - Make a bit vector for each fingerprint's set of grid points with minutiae
     - Optional: minhash bit vectors to obtain signatures
@@ -697,13 +704,6 @@ Optional: verify in data if candidate pairs really represent similar documents
     - Many-to-one problem: compare a fingerprint at a crime scene to a db of finger prints
   - Finding same/similar news articles
     - define a shingle to be a stop word plus the next two words -> avoids ads
-
-#### Sources
-  - [Lec] 2/10/20
-  - [Lec] 2/18/20
-  - [Book] Chapter 3: Finding Similar Items
-
-#### Concepts
 
 #### Questions
 ---
@@ -716,6 +716,73 @@ Optional: verify in data if candidate pairs really represent similar documents
   - [Book] Chapter 9: Recommendation Systems
 
 #### Concepts
+1. The Long Tail
+  - Shelf space is scarce for traditional retailers
+  - Web enables near-zero cost dissemination of information about products
+  - More choice necessitates better filters
+    - Recommendation engines
+2. Key Problems for Recommendation Systems
+  - Gathering known ratings for utility matrix
+    - Explicit: surveys
+    - Implicit: learn ratings from user actions
+  - Extrapolate unknown ratings from known ones
+    - Key problem: utility matrix is sparse
+      - Most people have not rated most items
+    - Cold Start
+      - New items have no ratings
+      - New users have no history
+  - Evaluating extrapolation methods
+2. Three Approaches to Recommendation Systems
+  - Content Based
+    - Use characteristics of an item
+    - Recommend items that have similar content to items user liked in the past
+    - Recommend items that match pre-defined attributes of the user
+  - Collaborative Filtering
+    - Build a model from a user's past behavior and similar decisions made by other users
+    - Use the model to predict items that the user may like
+    - Collaborative: suggestions made to a user utilize information across the entire user base
+  - Hybrid Approaches
+3. Content-Based Recommendations Systems
+  - Main Idea: Recommend items to customer x that are similar to previous items rated highly by x
+    - Requires characterizing the content of items in some way
+  - General Strategy
+    - Construct item profiles (item-based)
+      - Create vectors representing items
+        - Boolean vectors may indicate occurrence of high TF.IDF words, genres, tags
+        - Numerical vectors may contain ratings
+    - Construct user profiles (user-based)
+      - Create vectors with same components that describe users's preferences
+    - Recommend items to users based on content
+      - Calculate cosine distance between item and user vectors
+      - Classification algorithms
+4. Cosine Distance
+  - Cosine Distance = 1 - Cosine Similarity
+  - Cosine Similarity = (A.B) / |A||B|
+5. TF.IDF
+  - Term Frequency * Inverse Document Frequency
+  - Term Frequency, TFij = fij / (max_k fkj), where fij is the frequency of term i in document j
+    - Most frequent term has TFij = 1
+  - Inverse Document Frequency IDFi = log(N/ni), where N is num of docs and ni is number of docs that contain i
+6. Recommender Systems for Documents
+  - Make Recommendations based on features of documents
+  - Hard to classify by topic
+  - Use largest TF.IDF scores
+  - Use source, author
+7. User Profiles
+  - Boolean utility matrix: average components of vectors representing item profiles for the items in which utility matrix has 1 for the user
+  - Non-boolean utility matrix: weight the vectors representing profiles of items by utility (rating) value
+    - normalize ratings for user by subtracting the users average rating
+8. Summary of Content-Based Approach
+  + No need for data on other users
+  + No cold-start or sparsity problems (i.e new items can receive recommendations)
+  + Able to recommend to users with unique tastes
+  + Able to recommend new & unpopular items
+  + Able to provide explanations
+  - Finding the appropriate features is hard
+  - Recommendations for new users is hard
+  - Overspecialization
+    - Never recommends items outside user's content profile
+
 
 #### Questions
 ---
