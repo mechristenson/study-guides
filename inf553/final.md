@@ -711,7 +711,6 @@ Optional: verify in data if candidate pairs really represent similar documents
 
 #### Sources
   - [Lec] 2/24/20
-
   - [Lec] 3/2/20
   - [Book] Chapter 9: Recommendation Systems
 
@@ -791,6 +790,7 @@ Optional: verify in data if candidate pairs really represent similar documents
     - Model-based approaches
       - Estimate parameters of statistical models for user ratings
       - Latent factor and matrix factorization models
+  - Works for any kind of item with no feature selection needed
 10. User Based Collaborative Filtering
   - Weighted combination of ratings for a subset of similar users is used to make predictions for active user
   - Steps:
@@ -859,6 +859,60 @@ Optional: verify in data if candidate pairs really represent similar documents
     - When rating for CF tasks are extremely sparse, its hard to produce accurate predictions using Pearson corr
     - Use imputation technique to fill in missing data
       - mean imputation, linear regression imputation, predictive mean matching imputation...
+18. Model Based Collaborative Filtering
+  - Provide recommendations by estimating parameters of statistical models for user ratings
+  - Supervised learning based on training set
+  - Example models:
+    - Bayesian Models
+    - Clustering Models
+    - Dependency Networks
+    - Classification algorithms
+    - Regression models
+19. Clustering Collaborative Filtering Algorithms
+  - Clustering is an intermediate step
+  - Resulting clusters used for futher analysis or processing
+  - Clustering algorithms have better scalability than typical CF methods because they make predictions on smaller clusters rather than whole customer base
+  - Complex and expensive clustering computation must be run offline
+  - Recommendation quality is generally low
+  - Optimal clustering over large data sets is impractical
+  - Examples
+    - K-Means
+    - Hierarchical Clustering
+20. Regression Based CF Algorithms
+  - Good at making predictions for numerical values
+  - Uses an approximation of the ratings to make predictions based on a regression model
+  - Examples
+    - Linear Regression
+21. Challenges of Collaborative Filtering
+  - Data Sparsity: User item matrix is extremely sparse
+    - Solutions:
+      - Dimensionality reduction techniques
+        - Singular Value Decomposition: remove unrepresentative or insignificant users or items
+        - Latent Semantic Indexing: similarity between users is determined by representation in reduced space
+        - Principle Component Analysis
+  - Cold Start problem: what to do when a new user or item enters the system
+    - Solutions:
+      - Content-based systems: do not rely on ratings from other users
+      - Hybrid CF: external content info can be used to produce predictions for new users and items
+  - Synonyms: same or very similar items that have different names or entries
+    - Solutions:
+      - Automatic term expansion - construction of thesaurus
+      - SVD Techniques: construct a semantic space where terms and docs that are closely associated are placed close to eachother
+  - Scalability: O(n) algorithms are even too large with millions of customers and users
+    - Solutions:
+      - Dimensionality Reduction
+      - Memory-based CF algorithms have good scalability
+        - Instead of calc similarities between all pairs of items, only calc between pairs of corated items by a user
+  - Grey Sheep: users whose opinions do not consistently agree or disagree with any group of people
+    - Do not benefit from CF
+    - Solutions:
+      - Hybrid methods
+  - Black Sheep: idiosyncratic tastes make recommendations nearly impossible
+  - Shilling attacks: users may provide ratings to benefit themselves (yelp)
+    - Solutions:
+      - Item-based CF
+      - Hybrid CF
+
 #### Questions
 ---
 ### Analysis of Massive Graphs
