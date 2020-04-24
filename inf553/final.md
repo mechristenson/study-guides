@@ -1047,6 +1047,72 @@ Divide by two to get true betweenness
     - Implicit: communities that result from the nature of content creation of web
   - Find complete bipartite graphs from explicit communities (topics) to implicit communities (articles)
     - Similar to finding frequent itemsets
+9. Overlapping Communities
+  - Previous algorithms were designed to discover non-overlapping communities
+  - Often this model is incorrect, and overlapping communities are preferable
+  - Edge density can be higher inside community overlaps
+10. Maximum Likelihood Estimation
+  - Assume a generative model (for creating instances of some graph)
+    - Model has parameters for determining the probability of generating any particular instance of the graph
+    - We want to find the value of the parameters that gives the largest value of likelihood for the graph
+  - Simple MLE
+    - Each edge is present with probability p and presence or absence of edge is chosen independently
+      - Ex. graph has 15 nodes and 23 edges, and 105 pairs of nodes
+        - Probablity of having any such graph is `p^23(1-p)^82`
+    - Given a graph, G
+      - Write up a probability function f(p) of G
+        - To find best p:
+          - Set derivative of f(p) to 0
+          - Solve the equation for 0
+11. Affiliation Graph Model
+  - Given
+    - A number of communities
+    - A number of individuals
+  - Two sets of parameters
+    - membership parameter: each community can have any set of individuals as members
+    - probability Pc for each community: probability that two members are connected by an edge
+  - If u and v are both in communities C and D but not in other communities
+    - Prob of no edge Euv = (1-Pc)(1-Pd)
+    - Prob of edge Euv = 1 - (1-Pc)(1-Pd)
+  - General Case: if u and v are members of a set of M communities, prob of an edge is:
+    `Puv = 1 - Π_c_in_M(1-Pc)`
+  - If u and v share no community then we let
+    `Puv = ε`
+    - ε is a very tiny number
+  - AGM can express a variety of community structures: non-overlapping, overlapping, nested
+12. Detecting Communities with AGM
+  - Use MLE to find the model M, C, Pc when given graph G(V,E)
+  - Likelihood of AGM generating graph G:
+    `P(G|Θ) = Π_edges P(u,v) Π_nonedge_pairs (1-P(u,v))`
+  - Hard to find model parameters in discrete graph
+13. BigCLAM
+  - Key Idea: Memberships have strengths rather than discrete values -> simplifies optimization problem
+  - Each community, a, links nodes independently:
+    `Pa(u,v) = 1 - exp(-Fua * Fva)`
+    - Fua is the membership strength of node u to community a
+    - If u and v are not in the same community:
+      `Pa(u,v) = 1 - exp(0) = 0`
+    - If Fua and Fva are both large numbers:
+      `Pa(u,v) = 1 - exp(-LargeNumber) = 1 - SmallNumber`
+    - If Fua and Fva are both Small numbers:
+      `Pa(u,v) = 1 - exp(-SmallNumber) = 1 - LargeNumber`
+  - Factor Matrix - community membership strength matrix F, Nodes x Communities
+    - Probability that at least one common C links nodes u, v:
+      `P(u,v) = 1 - Πc(1-Pc(u,v)) = 1 - exp(-Fu * FvT)`
+    - Find F that maximizes l(F):
+      `l(F) = Σ_edges log(1 - exp(-Fu * FvT)) - Σ_nonedge_pairs Fu * FvT`
+      - Computing this gradient takes linear time
+    -BigCLAM 2.0
+      - If we cache `Σ_v Fv`, we can significantly speed up BigCLAM
+14. Directed AGM
+  - Everything is mostly the same except now we have 2 matricies, F and H:
+    - F: outgoing community memberships
+    - H: incoming community memberships
+    - Edge Prob
+      `P(u,v) = 1 - exp(-Fu HvT)`
+    - Network Log Likelihood
+      `l(F,H) = Σ_edges log(1 - exp(-Fu * HvT)) - Σ_nonedge_pairs Fu * HvT`
+
 #### Questions
 ---
 ### Mining Data Streams
