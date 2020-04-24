@@ -961,7 +961,92 @@ Optional: verify in data if candidate pairs really represent similar documents
   - [Book] Chapter 10: Analysis of Social Networks
 
 #### Concepts
-
+1. Betweenness
+  - The number of shortest paths which pass over an edge
+  - Edges with high betweenness are the least likely to be inside a community
+2. Girvan Newman Algorithm
+  - Discover communities using divisive hierarchical clustering
+  - Start with one cluster and recursively split using notion of edge betweenness
+  - Undirected weighted networks
+```
+Visit each node
+  Perform a BFS of the graph starting at X
+    - Depth level of each node is the length of the shortest path from X to that node
+    - Edges between depth levels are called Directed Acyclic Graph edges
+    - Each DAG edge is part of at least one shortest path from root X
+  Label each node by the number of shortest paths that reach it from the node
+  Calculate Credits starting from the bottom of the graph
+    - Each leaf node gets a credit of 1
+    - Each node that is not a leaf or a root gets 1 + sum of credits of DAG edges below
+    - Each edge gets a share of credit of the node (Z) below it proportional to the frac of shortest paths thru the edge from Z
+Sum contributions from each edge
+Divide by two to get true betweenness
+```
+3. Modularity
+  - A measure of how well a network is partitioned into communities
+  - Given a partition of the network into groups s in S:
+    `Q = Sum_s[(# edges in group s) - (expected # of edges in the group s)]`
+    - Expected edges is derived from a null model - a graph which matches one specific graph in its structural features, but is otherwise an instance of a random graph.
+  - Null Model
+    - Same degree distribution but random connections
+    `Expected number of edges between nodes = (ki * kj)/2m`
+  - Modularity of partitioning S of graph G
+    `Q(G,S) = 1/2m sum_s(sum_i(sum_j(Aij - (ki * kj)/2m)))`
+  - Modularity takes range [-1, 1]
+    - Positive if number of edges exceeds expected number
+    - 0.3-0.7<Q means significant community structure
+4. Spectral Clustering
+  - Key Idea: Find the balanced min cut of a graph
+  - Cut: weight of edges with only one vertex in a group
+    `cut(A,B) = sum_i,j(Wij), where i in A and j in B`
+  - Min cut only considers external cluster connections so we need to add more criteria
+  - Normalized cut: connectivity between groups relative to density of each group
+    `ncut(A,B) = cut(A,B)/vol(A) + cut(A,B)/vol(B)`
+    - vol(A): total weight of edges with at least one endpoint in A
+    - lower is better
+  - Finding optimal cut is NP-hard
+5. Partitioning Graphs with Matrix Algebra
+  - Eigenvalues and Eigenvectors of Laplacian Matrix of a graph give us a good idea how to partition
+  - Adjacency Matrix
+    - NxN matrix
+    - Aij = 1 if edge between i and j
+    - Symmetric
+    - Eigenvectors are real and orthogonal
+  - Degree Matrix
+    - NxN diagonal matrix
+    - Dii = degree of node i
+  - Laplacian Matrix
+    - NxN symmetric matrix
+    - L = D - A
+    - Eignenvalues are non-negative real numbers
+    - Eigenvectors are real and orthogonal
+    - Second smallest eigenvector provides optimal cut for graph
+      - Ncut as an optimization problem
+6. Spectral Clustering Algorithms
+  - Three basic stages:
+    - Preprocessing
+      - Build a matrix representation of the graph -> Laplacian Matrix
+    - Decomposition
+      - Compute eigenvalues and eigenvectors of the matrix
+      - Map each point to a lower dimensional representation based on one or more eigenvectors
+    - Grouping
+      - Assign points to two or more clusters based on new representation
+      - Naive approach: split at 0 or median value
+      - Expensive approach: minimize ncut in 1-dimension (iterate over ordering of nodes by value in eigenvector)
+7. K-Way Spectral Clustering
+  - Two Basic Approaches:
+    - Recursive Bi-paritioning
+      - Inefficient, unstable
+    - Cluster multiple eigenvectors
+      - Build a reduced space from multiple eigenvectors
+      - Prevent instability due to information loss
+8. Trawling
+  - Searching for small communities in the Web Graph
+  - Types of web communities
+    - Explicit: communities that manifest themselves as newsgroups or resource collections
+    - Implicit: communities that result from the nature of content creation of web
+  - Find complete bipartite graphs from explicit communities (topics) to implicit communities (articles)
+    - Similar to finding frequent itemsets
 #### Questions
 ---
 ### Mining Data Streams
