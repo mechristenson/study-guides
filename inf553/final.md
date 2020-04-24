@@ -912,6 +912,44 @@ Optional: verify in data if candidate pairs really represent similar documents
     - Solutions:
       - Item-based CF
       - Hybrid CF
+22. Hybrid Recommender Systems
+  - Combination of multiple recommendation techniques together for producing output
+23. Weighted Hybrid
+  - Score of different recommendation components are combined numerically using a linear formula
+  - Weights are static
+  - Appropriate when component recommenders have consistent relative accuracy across the product space
+  - Training: Each individual recommender processes the training data
+  - Two approaches:
+    - Intersection of candidate sets from each recommender
+    - Union of candidate sets from each recommender
+  - Scoring: Candidates -> Recommenders -> Weighted Combination -> Combined Score
+24. Mixed Hybrid
+  - Recommendations from different recommenders are presented together, no attempt to combine evidence
+  - Candidate Generation: User Profile -> Recommenders -> Candidates
+  - Scoring: Candidates -> Recommenders -> Ranked List -> Combined Display
+25. Switching Hybrid
+  - Selects a single recommender from its constituents based on the recommendation situation
+  - Components may not have consistent performance for all types of users
+  - Switching Decision: User Profile -> Recommenders -> Selection Criteria -> Selected Recommendation
+  - Candidate Generation: User Profile -> Selected Recommender -> Candidates
+  - Scoring: Candidate -> Selected Recommender -> Score
+26. Feature Combination
+  - Inject features of one source into an algorithm designed to process data from a different source
+  - Training: Data -> Contributing Recommender; Data, Contributing Recommender -> Actual Recommender
+27. Feature Augmentation
+  - Generate a new feature for each item by using the recommendation logic of the contributing domain
+  - Used when there is a strong primary recommendation component and a desire to add additional knowledge sources
+  - Candidate Generation: User Profile -> Contributing Recommender -> Actual Recommender -> Candidates
+  - Content boosted CF - use naive bayes to fill in missing values of rating matrices
+28. Cascade Hybrid
+  - Create a strictly hierarchical hybrid
+  - Scoring: Candidate -> Primary Recommender; Candidate, Primary Recommender -> Secondary Recommender -> Score
+29. Meta Level Hybrid
+  - Uses a model learned by one recommender as input for another recommender
+  - Similar to feature augmentation in that the contributing recommender is providing input to the actual recommender
+  - Contributing recommender completely replaces the original knowledge source with a learned model that the actual recommender uses
+  - Candidate Generation: User Profile -> Contributing Recommender -> Actual Recommender -> Candidates
+  - Scoring: Candidate -> Actual Recommender -> Score
 
 #### Questions
 ---
