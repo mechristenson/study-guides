@@ -757,12 +757,12 @@ Optional: verify in data if candidate pairs really represent similar documents
       - Classification algorithms
 4. Cosine Distance
   - Cosine Distance = 1 - Cosine Similarity
-  - Cosine Similarity = (A.B) / |A||B|
+  - `Cosine Similarity = (A.B) / |A||B|`
 5. TF.IDF
   - Term Frequency * Inverse Document Frequency
-  - Term Frequency, TFij = fij / (max_k fkj), where fij is the frequency of term i in document j
+  - Term Frequency, `TFij = fij / (max_k fkj)`, where fij is the frequency of term i in document j
     - Most frequent term has TFij = 1
-  - Inverse Document Frequency IDFi = log(N/ni), where N is num of docs and ni is number of docs that contain i
+  - Inverse Document Frequency `IDFi = log(N/ni)`, where N is num of docs and ni is number of docs that contain i
 6. Recommender Systems for Documents
   - Make Recommendations based on features of documents
   - Hard to classify by topic
@@ -782,8 +782,83 @@ Optional: verify in data if candidate pairs really represent similar documents
   - Recommendations for new users is hard
   - Overspecialization
     - Never recommends items outside user's content profile
-
-
+9. Collaborative Filtering Recommendation Systems
+  - Main Idea: Collect user feedback and exploit similarities in rating behavior among users
+  - Two classes of CF Algorithms:
+    - Neighborhood-based or Memory-based approaches
+      - User-based CF
+      - Item-based CF
+    - Model-based approaches
+      - Estimate parameters of statistical models for user ratings
+      - Latent factor and matrix factorization models
+10. User Based Collaborative Filtering
+  - Weighted combination of ratings for a subset of similar users is used to make predictions for active user
+  - Steps:
+    - Assign a weight to all users wrt similarity with the active user
+    - Select k users that have the highest similarity with the active user
+    - Compute a prediction from a weighted combination of the selected neighbor's ratings
+11. Similarity Metrics for Users
+  - Jaccard Similarity
+    - Ignore values in matrix, only look at which items are rated
+    - Slight improvement but still not great:
+      - Ignore values below 2/5, only look at items are rated 3 or above
+  - Cosine Similarity
+    - Slightly better than Jaccard
+    - Improve ratings with normalization by subtracting average rating of user from each rating
+  - Pearson Correlation
+    - Most commonly used measure of similarity
+12. Pearson Correlation between users
+  - Measure extent to which two variables linearly relate
+  - For users u, v: Pearson correlation is:
+    `Wuv = (sum((Rui - Ru_avg)(Rvi - Rv_avg))) / (sqrt(sum((Rui - Ru_avg)^2)) * sqrt(sum((Rvi - Rv_avg)^2)))`
+    - Wuv = pearson correlation coefficient between u and v
+    - Rui = Rating of user u on item i
+    - Ru_avg = Average rating of items for user u EXCEPT target item
+    - sum = sum over corated items
+13. Making User-based CF predictions with Pearson
+  - Weighted average of ratings is used to generate predictions:
+    `Pai = Ra_avg + (sum(Rui - Ru_avg) * Wau) / (sum(abs(Wau)))`
+    - Pai = predicted rating for user a of item i
+    - users = users who rated item i
+    - Ru_avg = average of ALL rated items for users
+    - sum = sum over all users who rated item i
+14. Item Based Collaborative Filtering
+  - Neighborhood-based CF algorithms do not scale well when applied to millions of users and items
+  - Matching user's rated items to similar items leads to faster online systems and better recommendations
+  - Similarities between pairs of items i and j are computed offline
+15. Pearson Correlation between items
+  - For items i, j: Pearson correlation is:
+    `Wij = (sum((Rui - Ri_avg)(Ruj - Rj_avg))) / (sqrt(sum((Rui - Ri_avg)^2)) * sqrt(sum((Rvi - Rj_avg)^2)))`
+    - Wij = pearson correlation coefficient between items i and j
+    - Rui = Rating of user u on item i
+    - Ri_avg = Average rating of item i by these users
+    - sum = sum over set of users who rated both i,j
+16. Making Item-based CF predictions with Pearson
+  - Weighted average of ratings is used to generate predictions:
+    `Pui = (sum(Run * Win)) / (sum(abs(Win)))`
+    - Win = weight between items i and n
+    - Run = rating for user u on item n
+    - sum = sum over neighborhood set N of items rated by u that are most similar to i
+17. Extensions to Memory-Based Algorithms
+  - Default Voting
+    - Pairwise similarity is not reliable when there are too few votes
+    - Focusing on co-rated items also neglects global rating behavior in user's rating history
+    - Assume some default voting values for missing ratings
+    - Approaches
+      - Reduce weights of users that have fewer than 50 items in common
+      - Use average of a clique (small group of co-rated items) as a default voting to extend a user's ratings
+      - Use a neutral or somewhat negative preference for unobserved ratings
+  - Inverse User Frequency
+    - Universally liked items are not as useful in capturing similarity as less common items
+    - Multiply original rating by inverse frequency, `log(N/nj)`
+  - Case Amplification
+    - Transform applied to weights used in CF predictions
+    - `wij' = wij * |wij|^(p-1), where p >= 1`
+    - Reduces noise in data, favors high weights
+  - Imputation Boosted CF
+    - When rating for CF tasks are extremely sparse, its hard to produce accurate predictions using Pearson corr
+    - Use imputation technique to fill in missing data
+      - mean imputation, linear regression imputation, predictive mean matching imputation...
 #### Questions
 ---
 ### Analysis of Massive Graphs
