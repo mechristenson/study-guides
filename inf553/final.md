@@ -1122,8 +1122,125 @@ Divide by two to get true betweenness
   - [Book] Chapter 4: Mining Data Streams
 
 #### Concepts
+1. Stream Data Processing
+  - Stream of tuples arriving at rapid rate
+    - Contrast with traditional DBMS where all tuples are stored in secondary storage
+  - Infeasible to use all tuples to answer queries
+    - Cannot store them all in main memory
+    - Too much computation
+    - Query Response time is critical
+2. Query Types
+  - Standing Queries
+    - Executed whenever new data tuple arrives
+    - Keep only one value
+  - Ad Hoc Queries
+    - Normal queries asked one time
+    - Need entire stream to have an exact answer
+3. Fixed Proportion Sampling
+  - Use hash to choose whether or not to save tuple
+    - e.g. hash user into 10 buckets, only save tuples with user in bucket 0
+    - careful how you decide to sample: position vs user
+3. Fixed Size Sampling
+  - Sample size may grow too big if the stream runs for a while even with fixed proportion
+  - Put an upperbound on the sample size
+    - Hash queries to large number of buckets, like 100
+    - Put them into sample if they hash < 10
+    - When sample grows too big throw away 9 and all associated users, and so on
+  - Alternative:
+```
+// s - exact number of tuples to store, n - total number of tuples seen
+Store first s elements of the stream to S
+For all other elements:
+  With probability s/n keep nth element
+    If we keep nth element, replace one element in S uniformly at random
+```
+4. Bloom Filter
+  - Check if an object o is in a set S without comparing to all objects in S
+  - No false negatives, but may have false positives
+  - Components:
+    - Array A of n bits, initially all 0's
+    - A set of hash functions that takes an object and returns a position in the array
+    - A set of S objects
+  - Construction:
+    - For each object o in S, apply each hash function to o and set resulting indices to 1
+  - Application:
+    - For each new object o', apply each hash function to o and see if resulting indices are 1
+  - False positive rate
+    `(number of items not in S but identified as in S) / (all items seen)`
+5. Flajolet Martin Algorithm
+  - Estimate count of distinct elements
+```
+Hash every element to a sufficiently long bit string (try to get unique string per element)
+Maintain R = length of longest length of trailing zeros among all bit strings
+Estimate count: 2^R
+```
+  - We can hash multiple times and take average of 2^R values but we may get very large 2^R values
+  - We can take median values of multiple runs but we get all values with power of 2
+  - Optimal: partition hashes into small groups, take average of a group and take the median of the averages
+6. Moments
+  - Kth moment of S:
+    `Σi=1..n (mi)^k`
+    - mi is the number of occurrences of an element vi in S
+    - 0th moment - number of distinct elements
+    - 1st moment - length of s
+    - 2nd moment - sum of squared frequencies (measures evenness of distribution of elements in S)
+7. AMS Algorithm
+  - Estimating 2nd moment of a stream of length n
+```
+Pick k random numbers between 1 and n
+For each number:
+  construct a variable X at position t
+  record its count from position t onwards to n as X.value
+Estimate:
+  1/k Σi=1..k n(2xk.value - 1)
+```
+  - Estimation for kth moment:
+    `n(c^k - (c-1)^k), where c = X.val`
+8. Sliding Window
+  - Useful model of stream processing is that queries are about a window of length N
+    - Save N most recent elements received
+    - Interesting case where N is so large that the data cannot be stored in memory or on disk
+9. Simple Approximate Solution to Counting Bits
+  - Assuming uniformity:
+    - Maintain 2 counters:
+      - S: number of 1s from beginning of the stream
+      - Z: number of 0s from beginning of the stream
+    - 1's in last N bits = `N * (s/(s+z))`
+10. DGIM Method
+  - Does not assume uniformity
+  - Store O(log^2N) bits per stream
+  - Solution gives an approximate answer never off by more than 50%
+  - Key Idea
+    - Partition N into a small set of buckets
+    - Remember count and timestamp for each bucket
+    - Use counts to approximate answers to queries
+  - Creating Buckets
+    - Right most bit of each bucket = 1
+    - Every 1 position in the window is in some bucket
+    - A position can only be in a single bucket
+    - At most two buckets can have the same size
+    - Size of older buckets >= size of new ones
+    - Either one or two buckets with same power of 2 number of 1s
+    - Buckets do not overlap in timestamps
+    - Buckets are sorted by size
+    - Buckets disappear when their end time is >N time units in the past
+  - Updating buckets
+    - when a new bit comes in:
+      - drop the oldest bucket if its end time is prior to N time units before current time
+      - if current bit is 0, do nothing
+      - if current bit is 1:
+        - create a new bucket of size 1 for this bit
+        - if there are now 3 buckets of size 1
+          - combine oldest two buckets into a bucket of size 2
+        - repeat for all bucket sizes until you don't combine
+  - Querying
+    - sum sizes of all buckets except the last, half the size of the last bucket
+      - case 1: estimate < actual: estimate is at least 50% of c
+      - case 2: estimate > actual: estimate is at most 50% greater than c
+  - Extensions we can allow N buckets of each size to reduce amount of uncertainty but raise storage required
 
 #### Questions
+
 ---
 ### Clustering Massive Data
 
@@ -1132,6 +1249,137 @@ Divide by two to get true betweenness
   - [Book] Chapter 7: Clustering
 
 #### Concepts
+1. Clustering
+  - Given set of points and notion of distance between points, group points into some number of clusters where:
+    - Members of a cluster are close/similar to each other
+    - Members of different clusters are dissimilar
+  - Points are usually in high dimensional space
+  - Similarity often defined using distance measure: Euclidean (points), Cosine (vectors), Jaccard (sets), Edit, etc.
+  - In high dimensional spaces, almost all pairs of points are about the same distance apart
+  - In high dimensional spaces, data vectors become orthogonal
+2. Methods of Clustering
+  - Hierarchical
+    - Agglomerative (bottom up)
+      - initially each point is a cluster
+      - repeatedly combine two nearest clusters into one
+    - Divisive (top down)
+      - start with one cluster and recursively split it
+  - Point Assignment
+    - maintain a set of clusters
+    - points belong to the nearest cluster
+3. Hierarchical Clustering
+  - Key Operation: repeatedly combine two nearest points
+  - Represent a cluster of many points by a centroid (average of points), clustroid (representative point)
+  - Measure cluster distances by distances of centroids or clustroids
+  - Closest Clustroid Options:
+    - Smallest maximum distance to other points
+    - Smallest average distance to other points
+    - Smallest sum of squares of distances to other points
+  - Nearness of clusters
+    - intercluster distance: minimum of the distances between any two points, one from each cluster
+    - pick a notion of cohesion of clusters, e.g. maximum distance from the clustriod
+  - Cohesion
+    - use the diameter of the merged cluster (maximum distance between points in the cluster)
+    - use the average distance between points in the cluster
+    - density-based approach: take the diameter or avg distance and divide by the number of points in the cluster
+4. Naive Implementation of Hierarchical clustering
+  - Initially O(n^2) for creating matrix and finding pair with minimum distance
+  - Overall complexity O(n^3)
+  - At each step, compute pairwise distances between all pairs of clusters, then merge
+  - Careful implementation using priority queue can reduce time to O(N^2 logN)
+    - Still too expensive for really big datasets that dont fit into memory
+5. K-Means Clustering
+  - Assumes Euclidean space
+  - Start by picking k, the number of clusters
+  - Initialize clusters by picking one point per cluster
+    - Ex. Pick one point at random, then k-1 other points, each as far away as possible from the other points
+  - Populating clusters:
+```
+For each point, place it in the cluster whose current centroid is nearest
+After all points have been assigned, update the locations of the centroids of the k clusters
+Reassign all points to their closest centroid
+  - Sometimes points move between clusters
+Repeat 2 and 3 until convergence
+  - Convergence: points don't move between clusters and centroids stabilize
+```
+  - How to select k
+    - Trial and error
+    - Average distance to centroid will fall rapidly until the optimal k, then k will increase quickly as distance changes little, find the middle of that trend
+6. BFR Algorithm
+  - Extension of k-means to large data
+  - Assumes that clusters are normally distributed around a centroid in euclidean space
+  - Efficient way to summarize clusters O(clusters), not O(data)
+  - Points are read from disk one main-memory full at a time
+  - Most points from previous memory loads are summarized by simple statistics
+```
+Beginning with initial load, select initial k centroids by some sensible approach:
+1. take k random points
+2. take a small random sample and cluster optimally
+3. take a sample, pick a random point, then k-1 more points each as far as possible from previous points
+
+Three classes of points:
+- Discard set: points close enough to a centroid to be summarized
+- Compression set: groups of points that are close together but not close to any existing centroid
+  - Point are summarized but not assigned to a cluster
+- Retained set: isolated points waiting to be assigned to a compression set
+
+For each cluster, the discard set and compression set is summarized by:
+- Number of points, N
+- Vector SUM, whose ith component is the sum of the coordinates of the points in the ith dimension
+- Vector SUMSQ, ith component = sum of squares of coordinates in ith dimension
+- 2d + 1 values represent any size cluster, d = dimensions
+- Average in each dimension (centroid) can be calculated as SUMi/N
+- Variance of a cluster's discard set in dimension i is (SUMSQi/N) - (SUMi/N)^2
+
+Processing points:
+  - Find points that are sufficiently close to a cluster centroid and add those points to that cluster and the DS
+  - Use any main-memory algorithm to cluster the remaining points and the old RS
+    - Clusters go to CS, outliers go to RS
+  - DS Set: adjust statistics of the clusters to account for the new points
+    - Add Ns, SUMs, and SUMSQs
+  - Consider merging compressed sets in CS
+  - If this is the last round, merge all compressed sets in teh CS and all RS points into their nearest cluster
+```
+  - Sufficiently close is defined in BFR two ways:
+    - Mahalanobis distance is less than a threshold
+    - High likelihood of the point belonging to currently nearest centroid (within N standard deviations of mean)
+7. Mahalanobis Distance
+  - Normalized euclidean distance from centroid
+```
+For a point (x1...xd) and centroid (c1...cd)
+  1. Normalize in each dimension yi = (xi - ci) / σi
+  2. Take the sum of squares of yi
+  3. Take the square root:
+    d(x,c) = sqrt(Σi=1..d ((xi - ci) / σi)^2)
+```
+  - If clusters are normally distributed in d dimensions, then after transformation, one standard deviation = sqrt(d)
+8. CURE Algorithm
+  - Extension of k-means to clusters of arbitrary shapes
+  - Problems with BFR and K-Means
+    - Assumes clusters are normally distributed in each dimension
+    - Assumes axes are fixed - ellipses at an angle are not OK
+  - Allows clusters to assume any shape
+  - Uses a collection of representative points to represent clusters
+```
+Pass 1:
+0. Pick a random sample of points that fit in main memory
+1. Initial clusters:
+  - cluster these points hierarchically - group nearest points/clusters
+2. Pick representative points:
+  - For each cluster, pick a sample of points as dispersed as possible
+  - From the sample pick representative points by moving them 20% toward the center of the cluster
+Pass 2:
+Rescan the whole data set and visit each point p in the data set
+Place each point in the closet cluster (closest representative point)
+```
+9. CURE vs BFR
+  - Distribution of Data:
+    - CURE: do not assume any particular distribution
+    - BFR: data should be normally distributed
+  - Representation of Cluster
+    - CURE: a set of representatives
+    - BFR: centroid
+  - Common: both assume data in euclidean space
 
 #### Questions
 ---
