@@ -1391,6 +1391,151 @@ Place each point in the closet cluster (closest representative point)
   - [Book] Chapter 5: Link Analysis
 
 #### Concepts
+1. Early Web Search
+  - Keywords extracted from web pages to build inverted index
+  - Queries matched with web pages via look up in inverted index
+  - Pages ranked by occurrences of kewords -> highly susceptible to spam
+2. Term Spam
+  - Disguise a page as something it is not about
+    - add thousands of keywords
+    - fade spam words into background
+    - copy top ranked pages
+3. Page Rank
+  - Key Idea: rank pages by linkage
+    - How many pages point to a page
+    - How important are those pages
+  - Based on limiting distribution: probability distribution will converge eventually
+  - Probability that a random surfer lands on the page
+    - Naive model assumes a strongly connected web graph
+  - Flow Model
+    - A vote from an important page is worth more than a vote from an unimportant page
+    - The rank of a page is:
+      `rj = Σi->j ri/di`
+      - di = out-degree of node i
+  - Matrix Forumlation
+    - Stochastic Adjacency Matrix:
+      - If j had n outlinks and outlink j->i then Mij = 1/n, else Mij = 0
+      - Columns sum to 1
+    - Rank vector r is a vector with one entry per web page
+      - ri is the importance score of page i
+    - The flow equation is:
+      `ri = Mri+1`
+4. Solving Mv = v by Power Iteration:
+```    
+Suppose there are N web pages
+Initialize r0 = [1/N...1/N]T
+Iterate rk+1 = Mrk
+Stop when |rk+1 - rk| < ε, where ε is some small constant
+```
+  - Complexity = O(kn^2), where k = # of iterations
+5. Solving Mv=v by Finding Eigenvector
+  - rank vector r is an eigenvector of the stochastic web matrix M
+  - r is M's first or principal eigenvector with corresponding eigenvalue 1
+  - largest eigenvalue of M is 1 since M is column stochastic and non-negative
+```
+Calculating Eigenvalues
+Mv = λv
+(M - λI)v = 0, and v is not a null vector, so
+det(M - λI) = 0
+Solve and find minimum λ
+```
+  - This becomes solving Mv=v by Gaussian Elimination
+    - Make upper triangle matrix using pivot points
+    - Multiply upper triangle M by v, and solve for v's
+  - Complexity = O(n^3)
+6. Dead Ends
+  - Node has no outlinks
+  - PageRank importance "leaks out"
+  - Non stochastic matrix
+  - Solutions:
+    - Always teleport
+    - Taxation
+      - reduces loss but does not eliminate loss
+      - At some point net loss and gain will balance out
+    - Prune and propagate
+      - Preprocess graph to recursively eliminate dead ends
+      - Compute page rank on reduced graph
+      - Approximate values for dead ends by propagating values from reduced graph
+        - Results in non-stochastic estimation for page rank
+7. Spider Traps
+  - All out-links are within a group
+  - Random walks get stuck in a trap
+  - Spider traps absorb all pagerank importance
+  - Solutions:
+    - Taxation/teleportation
+8. Teleports/Taxation
+  - At each time step a surfer has two options: follow a link at random or jump to some random page
+  - Surfer will teleport out of a spider trap within a few time steps
+  - Matrix formulation
+    - Random teleport is equivalent to taxing each page a fraction (1-B) of its score and redistributing evenly
+  - Formula
+    `v' = BMv + (1-B)e/n`
+    - B = damping factor usually .8-.9
+    - e = n dimensional vector with all 1s
+    - n = number of nodes in the graph
+  - Makes graph strongly connected
+9. PageRank iteration with MapReduce
+  - If n is small enough that each map task can store the full vector v and v' in main memory, we can break up our M matrix into strips
+  - Given the size of the web, v is much too large to fit in main memory
+    - Break M into vertical strips and break v into corresponding horizontal strips to execute mapreduce
+      `vi' = Σj=1..n mij * vj`
+    - Combiner gets more complicated
+      - k^2 map tasks
+      - each task gets one square of the matrix M and one stripe of the vector v
+        - each stripe is sent to k different map tasks
+        - vj is sent to the task handling mij for each of the k possible values of i
+      - Advantage: keep both the jth stripe of v and ith stripe of v' in main memory as we process mij
+        - Mij only transmitted once
+10. Topic-Specific Page Rank
+  - Normal page rank measures generic popularity of a page
+  - Goal: evaluate pages by how close they are to a particular topic
+  - Allows search queries to be answered based on interests of a user
+  - Key Idea: Teleports go to a topic-specific set of relevant pages, "teleport set"
+    - Bias the random walk
+    - Discover Topic PageRank Vectors Rs for a topic set S
+  - Integrating Topic-Sensitive PageRank into a search engine
+    - Decide on topics for which to create specialized pagerank vectors
+    - Pick a teleport set for each of these topics
+    - Determine the topic or set of topics most relevant to a particular search query
+    - Use pagerank vector for those topics to order teh responses to the search query
+  - How to select the topic set that is most relevant to the search query?
+    - User can pick from a topic menu
+    - Infer the topics from the context of the query
+    - Infer the topics from information about the user
+11. WebSpam
+  - Deliberate action to boost a webpages position in search results
+  - Not commensurate with page's real value
+12. LinkSpam
+  - Create link structures that boost PageRank of a particular page
+  - SpamFarm
+    - TargetPage is linked to by comments section of accessible pages
+    - Supporting pages are linked to by TargetPage to hold PageRank value and create a large teleport set
+    - Supporting pages link to TargetPage to send it teleport value
+13. TrustRank
+  - Teleport set consists of "Trusted" and "Authoratative" pages
+    - Authoritative: receive a lot of links on a topic
+    - Trusted: are inaccessible to spammers (no comments sections)
+14. Hubs and Authorities (HITS)
+  - Variant of topic-sensitive PageRank
+  - Identify trustworthy pages
+    - Manually examine pages with high pageranks
+    - Pick pages within controlled domains: edu, gov, mil
+    - Avoid blogs or forums or any comment sections
+  - Each page has two scores
+    - Hub: does it provide many pointers to a topic?
+      - Sum of authority scores pointing to the page
+    - Authority: how important is a page about the topic?
+      - Sum of hub scores pointing to the page
+  - Compute via mutual recursion
+```
+Start with h0 = vector of all 1's
+Compute a1 = LTh0 then scale so largest component is 1
+Compute h1 = La1, and scale
+Repeat until h and a don't change much
+```
+  - LT = un-normalized M in PageRank
+  - L: L[i,j] = 1 if there is a link from node i to node j
+
 
 #### Questions
 ---
