@@ -1536,7 +1536,6 @@ Repeat until h and a don't change much
   - LT = un-normalized M in PageRank
   - L: L[i,j] = 1 if there is a link from node i to node j
 
-
 #### Questions
 ---
 ### Web Advertising
@@ -1546,5 +1545,91 @@ Repeat until h and a don't change much
   - [Book] Chapter 8: Advertising on the Web
 
 #### Concepts
+1. Web Advertisements
+  - Direct Ads
+    - Craigslist, Autotrading Sites, Social Network feeds
+  - Featured Ads
+    - Featured on websites
+    - Pay per impression
+  - Sponsored Products in stores
+    - Collaborative filtering
+    - Similar Items
+  - Search Ads
+    - Top results
+    - Most lucrative type of online advertisements
+    - Charges user per impression of their ads
+2. Adwords Model
+  - Matches search queries to advertisements
+  - Require algorithms for optimizing this assignment
+3. Online Algorithms
+  - See input one piece at a time and make irrevocable decisions along the way
+  - Only know past queries and current queries
+  - Similar to handling data streams
+  - Cannot do as well as an offline algorithm
+4. Online Bipartite Matching
+  - Simplified version of matching ads to search queries
+  - Look for maximal matching in a bipartite graph
+    - Maximal match: largest number of possible matches
+    - Perfect match: all vertices of graph are matched
+5. Greedy Bipartite Matching Algorithm
+  - Pair new query with any eligible partner, if none then do not pair query
+  - Competitive Ratio:
+    `min_inputs(|Mgreedy| / |Moptimal|)`
+    - For input I suppose greedy produces matching Mgreedy while optimal is Moptimal
+    - Represents greedy's worst performance over all possible inputs I
+6. Adwords Problem
+  - Given:
+    - A set of bids by advertisers for search queries
+    - A click through rate for each advertiser query pair
+    - A budget for each advertiser
+    - A limit on the number of ads to be displayed with each search query
+  - Respond to each search query with a set of advertisers such that:
+    - The size of the set is no larger than the limit on the number of ads per query
+    - Each advertiser has big on the search query
+    - Each advertiser has enough budget left to pay for the ad if it is clicked upon
+  - Goal: Maximize search engines revenues
+  - Expected Revenue = Bid * Click-through-rate
+  - Complications:
+    - Budget
+    - CTR of an ad is unknown
+      - We can measure this historically, but its still a very hard problem
+        - exploitation: keep showing an ad for which we have good estimates of CTR
+        - exploration: show a brand new ad to get a better sense of its CTR
+7. Greedy Algorithm for Adwords Problem
+  - Assign the query to the highest bidder who still has budget left
+    - Problematic if highest bidder has a more flexible query
+  - General case: competitive ratio is 1/2
+8. BALANCE Algorithm
+  - For each query pick the advertiser with the largest unspent budget
+    - Break ties arbitrarily but in a deterministic way
+  - General case: competitive ratio is 1-1/e = 0.63
+  - Balance works well when bids are 1,0
+    - In practice bids and budgets can be arbitrary
+    - In general setting balance can perform poorly
+```
+Consider query q, bidder i
+  - bid: xi
+  - budget: bi
+  - amount spent so far: mi
+  - fraction of budget left: fi = 1-(mi/bi)
+
+Ψi(q) = xi (1-exp(-fi)) -> bid ranking
+
+Allocate query q to bidder with largest value of Ψ
+```
+  - Improvements needed
+    - Bias choice of an ad in favor of higher bids
+    - Consider the fraction of budget remaining
+    - Dont leave too much of any advertisers budget unused
+    - Algorithm does not account for possiblity that CTR differs for different ads
+      - Multiply bid by CTR when computing Psi
+    - Consider historical frequency of queries
+9. Real Adwords Aspects
+  - Bid on subset, superset, synonyms instead of set of keywords
+  - Charge advertizers based on complicated formulas
+  - Search engines use second-price auction
+    - Each advertiser pays amount of second place bidder
+    - Less susceptible to being gamed
+    - Lead to higher revenues for search engines
 
 #### Questions
